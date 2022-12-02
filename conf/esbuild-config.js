@@ -18,8 +18,6 @@ module.exports = (release) => ({
   target: TARGET_BROWSERS,
   plugins: [
     importAsGlobals({
-      "@emotion/react": "EmotionReact",
-      "@emotion/styled": "EmotionStyled",
       "date-fns": "DateFns",
       lodash: "Lodash",
       react: "React",
