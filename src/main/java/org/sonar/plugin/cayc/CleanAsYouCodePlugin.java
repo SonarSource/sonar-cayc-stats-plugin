@@ -1,5 +1,4 @@
 /*
- * Example Plugin for SonarQube
  * Copyright (C) 2009-2020 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
@@ -17,28 +16,18 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.plugins.example.hooks;
+package org.sonar.plugin.cayc;
 
-import org.sonar.api.ce.posttask.PostProjectAnalysisTask;
-import org.sonar.api.ce.posttask.QualityGate;
-import org.sonar.api.utils.log.Loggers;
+import org.sonar.api.Plugin;
+import org.sonar.plugin.cayc.web.CAYCPageDefinition;
 
 /**
- * Logs the Quality gate status in Compute Engine when analysis is finished (browse
- * Administration > Projects > Background Tasks).
- * A real use-case would be to send an email or to notify an IRC channel.
+ * This class is the entry point for all extensions. It is referenced in pom.xml.
  */
-public class DisplayQualityGateStatus implements PostProjectAnalysisTask {
-  @Override
-  public void finished(ProjectAnalysis analysis) {
-    QualityGate gate = analysis.getQualityGate();
-    if (gate != null) {
-      Loggers.get(getClass()).info("Quality gate is " + gate.getStatus());
-    }
-  }
+public class CleanAsYouCodePlugin implements Plugin {
 
   @Override
-  public String getDescription() {
-    return "Display Quality Gate status";
+  public void define(Context context) {
+    context.addExtension(CAYCPageDefinition.class);
   }
 }

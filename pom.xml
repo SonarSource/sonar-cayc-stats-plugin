@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.sonarsource.plugins.example</groupId>
-  <artifactId>sonar-example-plugin</artifactId>
+  <groupId>org.sonarsource.plugins.cayc</groupId>
+  <artifactId>sonar-cayc-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>9.0.0</version>
 
-  <name>Example Plugin for SonarQube 9.x</name>
-  <description>Example of Plugin for SonarQube: Foo Language, FooLint, Custom Metrics and MeasureComputers</description>
+  <name>Clean As You Code Plugin</name>
+  <description>SonarQube plugin showcasing the Clean As You Code approach to development</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,7 +57,9 @@
         <extensions>true</extensions>
         <configuration>
           <pluginKey>cayc</pluginKey>
-          <pluginClass>org.sonarsource.plugins.example.ExamplePlugin</pluginClass>
+          <pluginName>Clean As You Code</pluginName>
+          <pluginDescription>Plugin showcasing the Clean As You Code approach to development</pluginDescription>
+          <pluginClass>org.sonar.plugin.cayc.CleanAsYouCodePlugin</pluginClass>
           <sonarQubeMinVersion>9.5</sonarQubeMinVersion>
         </configuration>
       </plugin>
