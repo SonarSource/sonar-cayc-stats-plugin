@@ -1,0 +1,64 @@
+# ---- Gradle
+build/
+.gradle/
+.gradletasknamecache
+classes/
+out/
+
+# ---- Maven (in integration tests)
+target/
+
+# ---- IntelliJ IDEA
+*.iws
+*.iml
+*.ipr
+.idea/
+.attach_pid*
+out/
+
+# ---- VS Code
+.vscode/
+*.code-workspace
+
+# Directories generated on build on Windows
+bin/
+!sonar-application/src/main/assembly/elasticsearch/**/bin/
+!sonar-application/src/main/assembly/elasticsearch-patch/**/bin/
+
+# npm logs
+npm-debug.log*
+npm.tar.gz
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Eclipse
+.classpath
+.project
+.settings
+.externalToolBuilders
+
+# ---- Mac OS X
+.DS_Store
+# Thumbnails
+._*
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# ---- Windows
+# Windows image file caches
+Thumbs.db 
+# Folder config file
+Desktop.ini
+
+# ---- Linux
+.directory
+
+# ---- frontend
+node/
+node_modules/
+install-state.gz
+
+# ---- SonarQube
+.sonar/
+.scannerwork/
