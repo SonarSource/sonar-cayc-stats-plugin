@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "sonar-request": ["src/main/ts/@types/sonar-request.d.ts"],
+      "*": ["node_modules/*", "node_modules/@types/*"]
+    },
+    // "typeRoots": ["src/main/ts/sonar-request.d.ts"]
+  },
+  "include": ["./src/main/ts/**/*"],
+}
