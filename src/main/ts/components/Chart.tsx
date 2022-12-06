@@ -12,6 +12,7 @@ import { CAYC_PERIOD, HEIGHT, WIDTH } from "../constants";
 import ChartLine from "./ChartLine";
 import ChartVericalMarkers from "./ChartVerticalMarkers";
 import ChartXAxis from "./ChartXAxis";
+import Spinner from "./Spinner";
 import useData from "./useData";
 
 const CHART_SIDEBAR_WIDTH = 250;
@@ -23,7 +24,7 @@ export default function Chart() {
   const [loading, data, projection, xScale, yScale] = useData();
 
   if (loading) {
-    return <div>loading...</div>;
+    return <Spinner />;
   }
 
   const format = yScale.tickFormat(undefined, "~s");

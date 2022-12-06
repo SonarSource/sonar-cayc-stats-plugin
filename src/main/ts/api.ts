@@ -106,7 +106,7 @@ export function getIssues() {
         { date: "2022-11-01", value: 57 },
         { date: "2022-12-01", value: 0 },
       ]);
-    }, 500);
+    }, 5000);
   }).then((results) =>
     results.map(({ date, value }) => ({
       x: parseISO(date),
