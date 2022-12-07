@@ -6,6 +6,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import CaycPresentation from "./CAYCPresentation";
+import Chart from "./Chart";
 
 export default function CleanAsYouCode() {
   return (
@@ -13,13 +14,16 @@ export default function CleanAsYouCode() {
       <Card>
         <CaycPresentation />
       </Card>
+      <Card>
+        <Chart />
+      </Card>
     </Container>
   );
 }
 
 const Container = styled.div({
   display: "flex",
-  flexWrap: "wrap",
+  flexDirection: "column",
   maxWidth: "1280px",
   margin: "48px auto",
   fontSize: "14px",

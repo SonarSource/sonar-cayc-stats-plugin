@@ -25,7 +25,7 @@ export default function CaycPresentation() {
             }}
           />
         </Title>
-        <p>{translate("cayc.description")}</p>
+        <Paragraph>{translate("cayc.description")}</Paragraph>
       </div>
     </Grid>
   );
@@ -48,7 +48,11 @@ const Illustration = styled.img({
 });
 
 const Title = styled.h1({
-  fontSize: "20px",
+  fontSize: "1.3rem",
   marginTop: "8px",
   marginBottom: "32px",
+});
+
+const Paragraph = styled.p({
+  fontSize: "1rem",
 });
