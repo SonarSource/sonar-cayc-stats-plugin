@@ -27,6 +27,13 @@ public class CAYCWebServiceTest {
     assertEquals("api/cayc/issues_creation_histogram", action.path());
     assertEquals("Data for the Clean As You Code chart", action.description());
     assertTrue(controller.isInternal());
+
+    var yearsParam = action.param("years");
+    assertNotNull(yearsParam);
+    assertEquals("Number of years to start the histogram from. Defaults to 8 years.", yearsParam.description());
+    assertEquals(Integer.valueOf(20), yearsParam.maximumValue());
+    assertEquals("8", yearsParam.defaultValue());
+    assertEquals("5", yearsParam.exampleValue());
   }
 
 }
