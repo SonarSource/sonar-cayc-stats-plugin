@@ -19,7 +19,7 @@ export default function ChartXAxis({ xScale }: Props) {
     <g>
       {ticks.map((t) => {
         return (
-          <text key={t.getDate()} textAnchor="middle" x={xScale(t)} y={16}>
+          <text key={t.getTime()} textAnchor="middle" x={xScale(t)} y={16}>
             {format(t)}
           </text>
         );

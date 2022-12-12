@@ -27,7 +27,7 @@ public class CAYCPageDefinition implements PageDefinition {
   @Override
   public void define(Context context) {
     context
-      .addPage(Page.builder("cayc/lie")
+      .addPage(Page.builder("cayc/stats")
         .setName("What is Clean As You Code?")
         .build());
   }

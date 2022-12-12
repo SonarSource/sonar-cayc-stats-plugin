@@ -6,7 +6,7 @@
 const TARGET_BROWSERS = ["chrome58", "firefox57", "safari11", "edge18"];
 
 module.exports = (release) => ({
-  entryPoints: ["./src/main/ts/lie.tsx"],
+  entryPoints: ["./src/main/ts/stats.tsx"],
   outdir: "target/classes/static",
   tsconfig: "./tsconfig.json",
   define: {
