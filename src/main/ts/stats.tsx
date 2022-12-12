@@ -19,6 +19,6 @@
 import React from "react";
 import CleanAsYouCode from "./components/CleanAsYouCode";
 
-(window as any).registerExtension("cayc/lie", () => {
+(window as any).registerExtension("cayc/stats", () => {
   return <CleanAsYouCode />;
 });

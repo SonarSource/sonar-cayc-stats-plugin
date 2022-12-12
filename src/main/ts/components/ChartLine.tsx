@@ -27,6 +27,8 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
 
   const format = yScale.tickFormat(undefined, "~s");
 
+  const nowX = xScale(new Date());
+
   return (
     <g>
       <Line
@@ -34,19 +36,19 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
         style={{ stroke: projection ? "#6cd46c" : "#f0878e" }}
       />
       <Border
-        width={120}
+        width={130}
         height={20}
-        x={(xScale.range().pop() ?? 0) + 4}
+        x={nowX + 4}
         y={yScale(data[data.length - 1].y)}
         style={{
           fill: projection ? "#6cd46c" : "none",
           stroke: projection ? "#6cd46c" : "#f0878e",
         }}
       />
-      <text x={xScale.range().pop()} y={yScale(data[data.length - 1].y)} dx={8} dy={14}>
+      <text x={nowX} y={yScale(data[data.length - 1].y)} dx={12} dy={14}>
         {projection ? t("cayc.chart.with_cayc") : t("cayc.chart.current_state")}
       </text>
-      <text x={xScale.range().pop()} dx={152} dy={14} y={yScale(data[data.length - 1].y)}>
+      <text x={nowX} dx={152} dy={14} y={yScale(data[data.length - 1].y)}>
         {format(data[data.length - 1].y)} issues
       </text>
     </g>

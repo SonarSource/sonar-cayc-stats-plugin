@@ -15,26 +15,19 @@ interface Props {
 }
 
 export default function ChartVericalMarkers({ xScale }: Props) {
-  const CaycStartMarkerLocation = xScale(subYears(new Date(), CAYC_PERIOD));
-  const NowMarkerLocation = xScale(new Date());
+  const caycStartMarkerLocation = xScale(subYears(new Date(), CAYC_PERIOD));
+  const nowMarkerLocation = xScale(new Date());
   return (
     <>
       <VerticalMarker
         dash={true}
-        x1={CaycStartMarkerLocation}
-        x2={CaycStartMarkerLocation}
+        x1={caycStartMarkerLocation}
+        x2={caycStartMarkerLocation}
         y1={20}
         y2={300}
       />
-      <g>
-        <VerticalMarker
-          dash={false}
-          x1={NowMarkerLocation}
-          x2={NowMarkerLocation}
-          y1={20}
-          y2={300}
-        />
-      </g>
+
+      <VerticalMarker dash={false} x1={nowMarkerLocation} x2={nowMarkerLocation} y1={20} y2={300} />
     </>
   );
 }
