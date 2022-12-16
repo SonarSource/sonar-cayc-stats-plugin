@@ -1,9 +1,8 @@
 /*
- * Copyright (C) SonarSource SA
+ * Copyright (C) 2022-2022 SonarSource SA
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-
 import { ScaleTime } from "d3-scale";
 import React from "react";
 
