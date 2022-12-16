@@ -25,15 +25,6 @@ container_definition: &CONTAINER_DEFINITION
   region: eu-central-1
   namespace: default
 
-win_vm_definition: &WINDOWS_VM_DEFINITION
-  ec2_instance:
-    experimental: true # see https://github.com/cirruslabs/cirrus-ci-docs/issues/1051
-    image: base-windows-jdk11-v*
-    platform: windows
-    region: eu-central-1
-    type: t3.xlarge
-    subnet_id: ${CIRRUS_AWS_SUBNET}
-
 only_sonarsource_qa: &ONLY_SONARSOURCE_QA
   only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "dogfood-on-.*")
 

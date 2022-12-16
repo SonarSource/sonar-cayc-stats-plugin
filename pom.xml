@@ -24,6 +24,7 @@
     <sonar.testingHarnessVersion>9.5.0.56709</sonar.testingHarnessVersion>
     <jdk.min.version>11</jdk.min.version>
     <sonar.sources>src/main/java,src/main/ts</sonar.sources>
+    <gitRepositoryName>sonar-cayc-stats-plugin</gitRepositoryName>
   </properties>
 
   <dependencies>
