@@ -2,13 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>com.sonarsource.parent</groupId>
+    <artifactId>parent</artifactId>
+    <version>58.0.208</version>
+  </parent>
+
   <groupId>org.sonarsource.plugins.cayc</groupId>
   <artifactId>sonar-cayc-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>9.0.0</version>
+  <version>1.0.0</version>
 
   <name>Clean As You Code Plugin</name>
   <description>SonarQube plugin showcasing the Clean As You Code approach to development</description>
+
+   <inceptionYear>2022</inceptionYear>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

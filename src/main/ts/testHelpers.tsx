@@ -1,9 +1,8 @@
 /*
- * Copyright (C) 2017-2022 SonarSource SA
+ * Copyright (C) 2022-2022 SonarSource SA
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-
 import { render } from "@testing-library/react";
 import React from "react";
 import { IntlProvider } from "react-intl";
