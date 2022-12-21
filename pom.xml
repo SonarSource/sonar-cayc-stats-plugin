@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -16,7 +18,7 @@
   <name>Clean As You Code Plugin</name>
   <description>SonarQube plugin showcasing the Clean As You Code approach to development</description>
 
-   <inceptionYear>2022</inceptionYear>
+  <inceptionYear>2022</inceptionYear>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +47,6 @@
       <artifactId>sonar-ws</artifactId>
       <version>9.7.1.62043</version>
     </dependency>
-
 
 
     <!-- unit tests -->
@@ -77,7 +78,7 @@
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
       <version>1.1</version>
-  </dependency>
+    </dependency>
 
   </dependencies>
 
@@ -146,7 +147,17 @@
               <goal>yarn</goal>
             </goals>
             <configuration>
-              <arguments>run build</arguments>
+              <arguments>build</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <phase>test</phase>
+            <id>yarn run tests</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <configuration>
+              <arguments>test --coverage</arguments>
             </configuration>
           </execution>
         </executions>
