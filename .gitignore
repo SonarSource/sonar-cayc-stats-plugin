@@ -55,6 +55,7 @@ Desktop.ini
 .directory
 
 # ---- frontend
+coverage/
 node/
 node_modules/
 install-state.gz
