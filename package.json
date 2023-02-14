@@ -66,5 +66,6 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }
