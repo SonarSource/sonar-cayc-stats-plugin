@@ -21,15 +21,11 @@ const proxyTarget = process.env.PROXY || "http://localhost:9000";
 
 const config = getConfig(false);
 
-function run() {
+async function run() {
   console.log("starting...");
-  esbuild
-    .serve(
-      {
-        servedir: "target/classes/static",
-      },
-      config
-    )
+  const esbuildContext = await esbuild.context(config);
+  esbuildContext
+    .serve({ servedir: "target/classes/static" })
     .then((result) => {
       const { port: esbuildport } = result;
 

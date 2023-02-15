@@ -19,12 +19,9 @@ module.exports = (release) => ({
   plugins: [
     importAsGlobals({
       "date-fns": "DateFns",
-      lodash: "Lodash",
       react: "React",
       "react-dom": "ReactDOM",
       "react-intl": "ReactIntl",
-      "react-modal": "ReactModal",
-      "react-router-dom": "ReactRouterDom",
       "sonar-request": "SonarRequest",
       i18n: "window",
     }),
