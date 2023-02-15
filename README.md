@@ -1,5 +1,6 @@
 # sonar-cayc-stats-plugin
-SonarQube plugin showcasing the Clean As You Code approach to development
+
+SonarQube plugin showcasing the Clean as You Code approach to development
 
 ## Building
 
