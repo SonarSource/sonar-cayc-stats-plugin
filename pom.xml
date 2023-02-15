@@ -15,8 +15,8 @@
   <packaging>sonar-plugin</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>Clean As You Code Plugin</name>
-  <description>SonarQube plugin showcasing the Clean As You Code approach to development</description>
+  <name>Clean as You Code Plugin</name>
+  <description>SonarQube plugin showcasing the Clean as You Code approach to development</description>
 
   <inceptionYear>2022</inceptionYear>
 
@@ -91,8 +91,8 @@
         <extensions>true</extensions>
         <configuration>
           <pluginKey>cayc</pluginKey>
-          <pluginName>Clean As You Code</pluginName>
-          <pluginDescription>Plugin showcasing the Clean As You Code approach to development</pluginDescription>
+          <pluginName>Clean as You Code</pluginName>
+          <pluginDescription>Plugin showcasing the Clean as You Code approach to development</pluginDescription>
           <pluginClass>org.sonar.plugin.cayc.CleanAsYouCodePlugin</pluginClass>
           <sonarQubeMinVersion>9.5</sonarQubeMinVersion>
         </configuration>

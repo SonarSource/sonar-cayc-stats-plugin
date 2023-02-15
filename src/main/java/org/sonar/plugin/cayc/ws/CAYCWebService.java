@@ -18,9 +18,9 @@ public class CAYCWebService implements WebService {
 
   private void chartDataAction(Context context) {
     NewController controller = context.createController("api/cayc");
-    controller.setDescription("Clean As You Code metrics");
+    controller.setDescription("Clean as You Code metrics");
     controller.createAction("issues_creation_histogram")
-      .setDescription("Data for the Clean As You Code chart")
+      .setDescription("Data for the Clean as You Code chart")
       .setHandler(new CAYCChartDataRequestHandler())
       .setInternal(true)
       .createParam("years")
