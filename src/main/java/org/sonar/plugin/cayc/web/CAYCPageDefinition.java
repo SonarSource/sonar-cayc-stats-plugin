@@ -15,7 +15,7 @@ public class CAYCPageDefinition implements PageDefinition {
   public void define(Context context) {
     context
       .addPage(Page.builder("cayc/stats")
-        .setName("What is Clean As You Code?")
+        .setName("What is Clean as You Code?")
         .build());
   }
 }

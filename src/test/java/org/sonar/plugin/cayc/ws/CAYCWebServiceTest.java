@@ -24,12 +24,12 @@ public class CAYCWebServiceTest {
 
     Controller controller = context.controllers().get(0);
     assertEquals("api/cayc", controller.path());
-    assertEquals("Clean As You Code metrics", controller.description());
+    assertEquals("Clean as You Code metrics", controller.description());
 
     Action action = controller.action("issues_creation_histogram");
     assertNotNull(action);
     assertEquals("api/cayc/issues_creation_histogram", action.path());
-    assertEquals("Data for the Clean As You Code chart", action.description());
+    assertEquals("Data for the Clean as You Code chart", action.description());
     assertTrue(controller.isInternal());
 
     var yearsParam = action.param("years");
