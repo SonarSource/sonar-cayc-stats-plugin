@@ -3,8 +3,8 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import { ScaleTime } from "d3-scale";
-import React from "react";
+import { ScaleTime } from 'd3-scale';
+import React from 'react';
 
 interface Props {
   xScale: ScaleTime<number, number>;

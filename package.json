@@ -56,7 +56,8 @@
     "build": "node scripts/build.js",
     "start": "node scripts/start.js",
     "test": "jest",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "format": "prettier --write --list-different \"src/main/ts/**/*.{js,ts,tsx,css}\""
   },
   "babel": {
     "presets": [

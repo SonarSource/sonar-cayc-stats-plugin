@@ -3,10 +3,10 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import { Dict } from "../types/generic";
+import { Dict } from '../types/generic';
 
 type RequestData = Dict<any>;
 
-declare module "sonar-request" {
+declare module 'sonar-request' {
   export function getJSON(url: string, data?: RequestData, bypassRedirect?: boolean): Promise<any>;
 }

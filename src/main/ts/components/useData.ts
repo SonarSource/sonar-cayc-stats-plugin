@@ -3,12 +3,12 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import { extent } from "d3-array";
-import { scaleLinear, ScaleLinear, scaleTime, ScaleTime } from "d3-scale";
-import { differenceInMonths, isSameMonth, subYears } from "date-fns";
-import { useEffect, useState } from "react";
-import { getIssues } from "../api";
-import { CAYC_PERIOD, HEIGHT, WIDTH } from "../constants";
+import { extent } from 'd3-array';
+import { scaleLinear, ScaleLinear, scaleTime, ScaleTime } from 'd3-scale';
+import { differenceInMonths, isSameMonth, subYears } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { getIssues } from '../api';
+import { CAYC_PERIOD, HEIGHT, WIDTH } from '../constants';
 
 const NOISE_CAP = 0.05;
 const Q = 0.2;

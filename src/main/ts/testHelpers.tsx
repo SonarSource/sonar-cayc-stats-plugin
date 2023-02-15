@@ -3,9 +3,9 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import { render } from "@testing-library/react";
-import React from "react";
-import { IntlProvider } from "react-intl";
+import { render } from '@testing-library/react';
+import React from 'react';
+import { IntlProvider } from 'react-intl';
 
 export function renderComponent(component: React.ReactElement) {
   render(

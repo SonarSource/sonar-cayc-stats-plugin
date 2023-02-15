@@ -3,13 +3,13 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import { screen } from "@testing-library/react";
-import React from "react";
-import { renderComponent } from "../../testHelpers";
-import CleanAsYouCode from "../CleanAsYouCode";
+import { screen } from '@testing-library/react';
+import React from 'react';
+import { renderComponent } from '../../testHelpers';
+import CleanAsYouCode from '../CleanAsYouCode';
 
-jest.mock("../../api", () => {
-  const { subMonths } = jest.requireActual("date-fns");
+jest.mock('../../api', () => {
+  const { subMonths } = jest.requireActual('date-fns');
   const history = [];
   for (let i = 0; i < 36; i++) {
     history.push({
@@ -22,9 +22,9 @@ jest.mock("../../api", () => {
   };
 });
 
-it("should render correctly", async () => {
+it('should render correctly', async () => {
   renderComponent(<CleanAsYouCode />);
 
-  expect(await screen.findByText("cayc.title")).toBeInTheDocument();
-  expect(screen.getByText("cayc.description")).toBeInTheDocument();
+  expect(await screen.findByText('cayc.title')).toBeInTheDocument();
+  expect(screen.getByText('cayc.description')).toBeInTheDocument();
 });
