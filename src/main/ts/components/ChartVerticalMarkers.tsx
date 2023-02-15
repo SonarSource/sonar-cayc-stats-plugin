@@ -3,11 +3,11 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import styled from "@emotion/styled";
-import { ScaleTime } from "d3-scale";
-import { subYears } from "date-fns";
-import React from "react";
-import { CAYC_PERIOD } from "../constants";
+import styled from '@emotion/styled';
+import { ScaleTime } from 'd3-scale';
+import { subYears } from 'date-fns';
+import React from 'react';
+import { CAYC_PERIOD } from '../constants';
 
 interface Props {
   xScale: ScaleTime<number, number>;
@@ -31,7 +31,7 @@ export default function ChartVericalMarkers({ xScale }: Props) {
   );
 }
 const VerticalMarker = styled.line((props: { dash: boolean }) => ({
-  stroke: "#c3c3c3",
-  strokeWidth: "2px",
-  strokeDasharray: props.dash ? "4,6" : "",
+  stroke: '#c3c3c3',
+  strokeWidth: '2px',
+  strokeDasharray: props.dash ? '4,6' : '',
 }));

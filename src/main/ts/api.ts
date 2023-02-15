@@ -3,10 +3,10 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import { parseISO } from "date-fns";
-import { getJSON } from "sonar-request";
+import { parseISO } from 'date-fns';
+import { getJSON } from 'sonar-request';
 
-const ROOT = "/api/cayc";
+const ROOT = '/api/cayc';
 
 interface Response {
   history: Array<{ date: string; value: number }>;

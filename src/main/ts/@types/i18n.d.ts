@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-declare module "i18n" {
+declare module 'i18n' {
   // translate
   export function t(...keys: string[]): string;
 

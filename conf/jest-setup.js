@@ -3,4 +3,4 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import "@testing-library/jest-dom";
+import '@testing-library/jest-dom';

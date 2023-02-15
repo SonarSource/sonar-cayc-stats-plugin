@@ -3,8 +3,8 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import { keyframes } from "@emotion/react";
-import styled from "@emotion/styled";
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 
 const spin = keyframes`
 from { transform: rotate(0deg) }
@@ -26,7 +26,7 @@ const Spinner = styled.div`
     top: -2px;
     display: none;
     position: absolute;
-    content: "";
+    content: '';
     width: inherit;
     height: inherit;
     border: inherit;

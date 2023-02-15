@@ -3,16 +3,16 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import styled from "@emotion/styled";
-import { t as translate } from "i18n";
-import React from "react";
-import { FormattedMessage } from "react-intl";
-import { CAYC_PERIOD, HEIGHT, WIDTH } from "../constants";
-import ChartLine from "./ChartLine";
-import ChartVericalMarkers from "./ChartVerticalMarkers";
-import ChartXAxis from "./ChartXAxis";
-import Spinner from "./Spinner";
-import useData from "./useData";
+import styled from '@emotion/styled';
+import { t as translate } from 'i18n';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { CAYC_PERIOD, HEIGHT, WIDTH } from '../constants';
+import ChartLine from './ChartLine';
+import ChartVericalMarkers from './ChartVerticalMarkers';
+import ChartXAxis from './ChartXAxis';
+import Spinner from './Spinner';
+import useData from './useData';
 
 const CHART_SIDEBAR_WIDTH = 250;
 const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' 
@@ -26,7 +26,7 @@ export default function Chart() {
     return <Spinner />;
   }
 
-  const format = yScale.tickFormat(undefined, "~s");
+  const format = yScale.tickFormat(undefined, '~s');
   const issuesDelta = format(data[data.length - 1].y - projection[projection.length - 1].y);
 
   return (
@@ -35,9 +35,9 @@ export default function Chart() {
         <Title>
           <FormattedMessage
             id="cayc.chart.title"
-            defaultMessage={translate("cayc.chart.title")}
+            defaultMessage={translate('cayc.chart.title')}
             values={{
-              cayc: <strong>{translate("cayc")}</strong>,
+              cayc: <strong>{translate('cayc')}</strong>,
               count: CAYC_PERIOD,
             }}
           />
@@ -52,11 +52,11 @@ export default function Chart() {
         </svg>
         <img aria-hidden={true} alt="arrow" src={ARROW} />
         <div>
-          <Paragraph>{translate("cayc.chart.nudge")}</Paragraph>
+          <Paragraph>{translate('cayc.chart.nudge')}</Paragraph>
           <Paragraph>
             <FormattedMessage
               id="cayc.chart.fewer_issues"
-              defaultMessage={translate("cayc.chart.fewer_issues")}
+              defaultMessage={translate('cayc.chart.fewer_issues')}
               values={{
                 count: <Number>{issuesDelta}</Number>,
               }}
@@ -69,22 +69,22 @@ export default function Chart() {
 }
 
 const Title = styled.h1({
-  fontSize: "1.3rem",
-  marginTop: "8px",
-  marginBottom: "32px",
+  fontSize: '1.3rem',
+  marginTop: '8px',
+  marginBottom: '32px',
 });
 
 const Aligned = styled.div({
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const Paragraph = styled.p({
-  fontSize: "1.1rem",
-  margin: "0 8px 32px",
+  fontSize: '1.1rem',
+  margin: '0 8px 32px',
 });
 
 const Number = styled.span({
-  color: "#236a97",
-  fontWeight: "bold",
+  color: '#236a97',
+  fontWeight: 'bold',
 });

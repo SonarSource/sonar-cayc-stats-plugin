@@ -11,7 +11,7 @@ const { performance } = require('perf_hooks');
 
 const getConfig = require('../conf/esbuild-config');
 
-const release = process.argv.findIndex(val => val === 'release') >= 0;
+const release = process.argv.findIndex((val) => val === 'release') >= 0;
 
 function clean() {
   fs.emptyDirSync(path.join(__dirname, '../build/webapp'));

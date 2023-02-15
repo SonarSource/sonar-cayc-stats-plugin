@@ -4,28 +4,28 @@
  * mailto:info AT sonarsource DOT com
  */
 /* eslint-disable no-console */
-process.env.NODE_ENV = "development";
+process.env.NODE_ENV = 'development';
 
-const fs = require("fs");
-const esbuild = require("esbuild");
-const http = require("http");
-const httpProxy = require("http-proxy");
-const getConfig = require("../conf/esbuild-config");
+const fs = require('fs');
+const esbuild = require('esbuild');
+const http = require('http');
+const httpProxy = require('http-proxy');
+const getConfig = require('../conf/esbuild-config');
 
 const STATUS_OK = 200;
 
 const port = process.env.PORT || 3000;
-const protocol = process.env.HTTPS === "true" ? "https" : "http";
-const host = process.env.HOST || "localhost";
-const proxyTarget = process.env.PROXY || "http://localhost:9000";
+const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
+const host = process.env.HOST || 'localhost';
+const proxyTarget = process.env.PROXY || 'http://localhost:9000';
 
 const config = getConfig(false);
 
 async function run() {
-  console.log("starting...");
+  console.log('starting...');
   const esbuildContext = await esbuild.context(config);
   esbuildContext
-    .serve({ servedir: "target/classes/static" })
+    .serve({ servedir: 'target/classes/static' })
     .then((result) => {
       const { port: esbuildport } = result;
 
@@ -34,16 +34,16 @@ async function run() {
         target: `http://localhost:${esbuildport}`,
       });
 
-      proxy.on("error", (error) => {
-        console.error("Backend");
-        console.error("\t", error.message);
-        console.error("\t", error.stack);
+      proxy.on('error', (error) => {
+        console.error('Backend');
+        console.error('\t', error.message);
+        console.error('\t', error.stack);
       });
 
-      esbuildProxy.on("error", (error) => {
-        console.error("Frontend");
-        console.error("\t", error.message);
-        console.error("\t", error.stack);
+      esbuildProxy.on('error', (error) => {
+        console.error('Frontend');
+        console.error('\t', error.message);
+        console.error('\t', error.stack);
       });
 
       http
@@ -52,7 +52,7 @@ async function run() {
             // We need to remove the plugin "sub-directory". This is not part of the build output,
             // but is dynamically added by SonarQube. We build: `xxx.js`, but
             // SonarQube serves this under `/static/cayc/xxx.js`.
-            req.url = req.url.replace("static/cayc/", "");
+            req.url = req.url.replace('static/cayc/', '');
             esbuildProxy.web(req, res);
           } else {
             proxy.web(
@@ -61,7 +61,7 @@ async function run() {
               {
                 target: proxyTarget,
               },
-              (e) => console.error("req error", e)
+              (e) => console.error('req error', e)
             );
           }
         })

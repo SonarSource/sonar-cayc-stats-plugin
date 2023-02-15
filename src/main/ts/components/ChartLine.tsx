@@ -3,11 +3,11 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-import styled from "@emotion/styled";
-import { ScaleLinear, ScaleTime } from "d3-scale";
-import { curveBasis, line } from "d3-shape";
-import { t } from "i18n";
-import React from "react";
+import styled from '@emotion/styled';
+import { ScaleLinear, ScaleTime } from 'd3-scale';
+import { curveBasis, line } from 'd3-shape';
+import { t } from 'i18n';
+import React from 'react';
 
 interface Props {
   data: Array<{ x: Date; y: number }>;
@@ -24,7 +24,7 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
 
   lineGenerator.curve(curveBasis);
 
-  const format = yScale.tickFormat(undefined, "~s");
+  const format = yScale.tickFormat(undefined, '~s');
 
   const nowX = xScale(new Date());
 
@@ -32,7 +32,7 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
     <g>
       <Line
         d={lineGenerator(data) || undefined}
-        style={{ stroke: projection ? "#6cd46c" : "#f0878e" }}
+        style={{ stroke: projection ? '#6cd46c' : '#f0878e' }}
       />
       <Border
         width={130}
@@ -40,12 +40,12 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
         x={nowX + 4}
         y={yScale(data[data.length - 1].y)}
         style={{
-          fill: projection ? "#6cd46c" : "none",
-          stroke: projection ? "#6cd46c" : "#f0878e",
+          fill: projection ? '#6cd46c' : 'none',
+          stroke: projection ? '#6cd46c' : '#f0878e',
         }}
       />
       <text x={nowX} y={yScale(data[data.length - 1].y)} dx={12} dy={14}>
-        {projection ? t("cayc.chart.with_cayc") : t("cayc.chart.current_state")}
+        {projection ? t('cayc.chart.with_cayc') : t('cayc.chart.current_state')}
       </text>
       <text x={nowX} dx={152} dy={14} y={yScale(data[data.length - 1].y)}>
         {format(data[data.length - 1].y)} issues
@@ -55,11 +55,11 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
 }
 
 const Line = styled.path({
-  fill: "none",
-  strokeWidth: "3px",
+  fill: 'none',
+  strokeWidth: '3px',
 });
 
 const Border = styled.rect({
-  strokeWidth: "1px",
-  position: "relative",
+  strokeWidth: '1px',
+  position: 'relative',
 });
