@@ -18,6 +18,7 @@ env:
   BURGR_PASSWORD: VAULT[development/kv/data/burgr data.cirrus_password]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
+  NIGHTLY_CRON: 'nightly'
 
 container_definition: &CONTAINER_DEFINITION
   image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j11-latest
@@ -27,6 +28,9 @@ container_definition: &CONTAINER_DEFINITION
 
 only_sonarsource_qa: &ONLY_SONARSOURCE_QA
   only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "dogfood-on-.*")
+
+except_nightly_task_template: &EXCEPT_ON_NIGHTLY_TASK_TEMPLATE
+  only_if: $CIRRUS_CRON != $NIGHTLY_CRON
 
 build_task:
   eks_container:
@@ -52,6 +56,7 @@ promote_task:
   depends_on:
     - build
   <<: *ONLY_SONARSOURCE_QA
+  <<: *EXCEPT_ON_NIGHTLY_TASK_TEMPLATE
   eks_container:
     <<: *CONTAINER_DEFINITION
     cpu: 0.5

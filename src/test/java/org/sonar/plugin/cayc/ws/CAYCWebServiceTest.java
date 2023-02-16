@@ -17,7 +17,6 @@ import static org.mockito.Mockito.spy;
 
 public class CAYCWebServiceTest {
   private CAYCWebService underTest = new CAYCWebService();
-
   @Test
   public void chartDataActionDefinition() {
     Context context = spy(Context.class);
