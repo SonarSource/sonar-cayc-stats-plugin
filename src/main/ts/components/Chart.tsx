@@ -59,6 +59,7 @@ export default function Chart() {
               defaultMessage={translate('cayc.chart.fewer_issues')}
               values={{
                 count: <Number>{issuesDelta}</Number>,
+                fewer: <strong>{translate('fewer')}</strong>,
               }}
             />
           </Paragraph>
