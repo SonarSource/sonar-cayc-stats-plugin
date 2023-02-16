@@ -5,54 +5,30 @@
  */
 import { extent } from 'd3-array';
 import { scaleLinear, ScaleLinear, scaleTime, ScaleTime } from 'd3-scale';
-import { differenceInMonths, isSameMonth, subYears } from 'date-fns';
+import { differenceInMonths, isSameMonth } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { getIssues } from '../api';
-import { CAYC_PERIOD, HEIGHT, WIDTH } from '../constants';
+import { HEIGHT, WIDTH } from '../constants';
+import { computeCaycStartingDate } from './utils';
 
-const NOISE_CAP = 0.05;
-const Q = 0.2;
-const PROJECTION_TIME = 24; // months
-
-/*
- * proportion of issues fixed by code churn
- * Based on
- */
-function churn(t: number) {
-  return 1 - Q * (1 - Math.pow(1 - Q, t / 12));
-}
-
-function noise(
-  t: number,
-  y: number,
-  startPoint: { x: Date; y: number },
-  endPoint: { x: Date; y: number }
-) {
-  const slope = (endPoint.y - startPoint.y) / PROJECTION_TIME;
-
-  const shift = startPoint.y;
-
-  const linearProjection = slope * t + shift;
-
-  return 1 + Math.min((y - linearProjection) / linearProjection, NOISE_CAP);
+function computeIssuesDecayForCaycPeriod(initialIssuesCount: number, caycPeriodInMonths: number) {
+  // 20% fewer issues per year:
+  return initialIssuesCount * Math.pow(Math.pow(1 - 0.2, 1 / 12), caycPeriodInMonths)
 }
 
 function generateProjection(data: Array<{ x: Date; y: number }>) {
-  const startingDate = subYears(new Date(), CAYC_PERIOD);
+  const caycStartingDate = computeCaycStartingDate();
 
-  const startingPointIndex = data.findIndex(({ x }) => isSameMonth(x, startingDate));
+  const caycStartingPointIndex = data.findIndex(({ x }) => isSameMonth(x, caycStartingDate));
 
-  if (startingPointIndex === -1) {
-    return [];
-  }
+  const caycStartingPoint = caycStartingPointIndex > -1 ? data[caycStartingPointIndex] : data[0];
 
-  const startingPoint = data[startingPointIndex];
-  return data.slice(startingPointIndex).map(({ x, y }) => {
-    const t = differenceInMonths(x, startingPoint.x);
+  return data.slice(caycStartingPointIndex).map(({ x, y }) => {
+    const caycPeriodInMonths = differenceInMonths(x, caycStartingPoint.x);
 
-    const result = startingPoint.y * churn(t) * noise(t, y, startingPoint, data[data.length - 1]);
+    const issuesCount = computeIssuesDecayForCaycPeriod(caycStartingPoint.y, caycPeriodInMonths);
 
-    return { x, y: Math.round(result) };
+    return { x, y: Math.round(issuesCount) };
   });
 }
 
@@ -91,7 +67,6 @@ export default function useData(): [
       setXScale(() => timeScale);
 
       // y scale
-      // const maxYValue = max(cumulative.map(({ y }) => y)) ?? 1;
       const linearScale = scaleLinear()
         .range([HEIGHT - 16, 0])
         .domain([0, total * 1.5])

@@ -6,4 +6,4 @@
 export const HEIGHT = 300;
 export const WIDTH = 500;
 
-export const CAYC_PERIOD = 2; // years
+export const CAYC_PERIOD_IN_MONTHS = 24;

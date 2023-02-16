@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { t as translate } from 'i18n';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CAYC_PERIOD, HEIGHT, WIDTH } from '../constants';
+import { CAYC_PERIOD_IN_MONTHS, HEIGHT, WIDTH } from '../constants';
 import ChartLine from './ChartLine';
 import ChartVericalMarkers from './ChartVerticalMarkers';
 import ChartXAxis from './ChartXAxis';
@@ -38,7 +38,7 @@ export default function Chart() {
             defaultMessage={translate('cayc.chart.title')}
             values={{
               cayc: <strong>{translate('cayc')}</strong>,
-              count: CAYC_PERIOD,
+              count: CAYC_PERIOD_IN_MONTHS / 12, // CaYC period is in months
             }}
           />
         </Title>
