@@ -5,16 +5,15 @@
  */
 import styled from '@emotion/styled';
 import { ScaleTime } from 'd3-scale';
-import { subYears } from 'date-fns';
 import React from 'react';
-import { CAYC_PERIOD } from '../constants';
+import { computeCaycStartingDate } from './utils';
 
 interface Props {
   xScale: ScaleTime<number, number>;
 }
 
 export default function ChartVericalMarkers({ xScale }: Props) {
-  const caycStartMarkerLocation = xScale(subYears(new Date(), CAYC_PERIOD));
+  const caycStartMarkerLocation = xScale(computeCaycStartingDate());
   const nowMarkerLocation = xScale(new Date());
   return (
     <>
