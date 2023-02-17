@@ -17,4 +17,4 @@ The JAR will be deployed to `target/sonar-cayc-plugin-VERSION.jar`. Copy this to
 * `yarn start` to start a proxy server on port 3000 to debug your JS code.  
   *Note: This plugin must first be deployed and installed on your SonarQube instance, otherwise the extension paths will not be registered.
 * `yarn test` to start watching your files for changes, and run tests accordingly.
-* `yarn build` to build your front-end code.
+* `yarn build` to build your front-end code
