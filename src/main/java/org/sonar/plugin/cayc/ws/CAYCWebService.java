@@ -9,8 +9,6 @@ import org.sonar.api.server.ws.WebService;
 
 public class CAYCWebService implements WebService {
 
-  public static final int DEFAULT_YEARS = 8;
-
   @Override
   public void define(Context context) {
     chartDataAction(context);
@@ -22,13 +20,7 @@ public class CAYCWebService implements WebService {
     controller.createAction("issues_creation_histogram")
       .setDescription("Data for the Clean as You Code chart")
       .setHandler(new CAYCChartDataRequestHandler())
-      .setInternal(true)
-      .createParam("years")
-      .setDescription("Number of years to start the histogram from. Defaults to 8 years.")
-      .setMaximumValue(20)
-      .setDefaultValue("8")
-      .setExampleValue("5")
-      .setRequired(false);
+      .setInternal(true);
     controller.done();
   }
 }

@@ -8,21 +8,24 @@ package org.sonar.plugin.cayc.ws;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.sonar.api.server.ws.Request;
 import org.sonar.api.server.ws.RequestHandler;
 import org.sonar.api.server.ws.Response;
 import org.sonar.api.utils.text.JsonWriter;
-import org.sonar.plugin.cayc.ws.exceptions.InvalidRequestException;
 import org.sonarqube.ws.Common.FacetValue;
 import org.sonarqube.ws.client.WsClient;
 import org.sonarqube.ws.client.WsClientFactories;
 import org.sonarqube.ws.client.issues.SearchRequest;
 
-import static org.sonar.plugin.cayc.ws.CAYCWebService.DEFAULT_YEARS;
+import static org.sonar.api.rules.RuleType.BUG;
+import static org.sonar.api.rules.RuleType.VULNERABILITY;
 
 public class CAYCChartDataRequestHandler implements RequestHandler {
+  private static final int MAX_YEARS = 15;
   private WsClient wsClient;
 
   public CAYCChartDataRequestHandler() {
@@ -35,30 +38,26 @@ public class CAYCChartDataRequestHandler implements RequestHandler {
   @Override
   public void handle(Request request, Response response) {
     initialiseWsClient(request);
-
-    try {
-      writeResponse(response, issuesCreatedHistogram(getYears(request)));
-    } catch (InvalidRequestException e) {
-      try (JsonWriter json = response.newJsonWriter()) {
-        json.beginObject()
-          .prop("msg", e.getMessage())
-          .endObject()
-          .close();
-      }
-    }
+    writeResponse(response, issuesCreatedHistogram());
   }
 
-  private List<FacetValue> issuesCreatedHistogram(int years) {
-    List<LocalDate> yearDates = new ArrayList<>();
-    for (int year = years - 1; year >= 0; year--) {
-      yearDates.add(getDateMinusYear(year));
+  private List<FacetValue> issuesCreatedHistogram() {
+    boolean found = false;
+    List<FacetValue> result = new ArrayList<>();
+
+    for (int i = MAX_YEARS - 1; i >= 0; i--) {
+      var year = getDateMinusYear(i);
+      var request = yearlyCreatedIssuesSearchRequest(year);
+      var response = wsClient.issues().search(request);
+      if (found || response.getTotal() > 0) {
+        found = true;
+        result.addAll(response.getFacets().getFacets(0).getValuesList());
+      }
     }
 
-    return yearDates.stream()
-      .map(this::yearlyCreatedIssuesSearchRequest)
-      .map(request -> wsClient.issues().search(request))
-      .flatMap(response -> response.getFacets().getFacets(0).getValuesList().stream())
-      .collect(Collectors.toList());
+    Collections.sort(result, Comparator.comparing(FacetValue::getVal));
+
+    return result;
   }
 
   private static LocalDate getDateMinusYear(int year) {
@@ -66,26 +65,12 @@ public class CAYCChartDataRequestHandler implements RequestHandler {
     return currentYear.minusYears(year);
   }
 
-  private static int getYears(Request request) throws InvalidRequestException {
-    String years = request.param("years");
-    if (years != null) {
-      try {
-        int yearsNumber = Integer.parseInt(years);
-        if (yearsNumber <= 0) {
-          throw new InvalidRequestException("Invalid \"years\" parameter: " + years + ". Should be a positive number");
-        }
-        return yearsNumber;
-      } catch (NumberFormatException e) {
-        throw new InvalidRequestException("Invalid \"years\" parameter: " + years, e);
-      }
-    }
-    return DEFAULT_YEARS;
-  }
-
   private SearchRequest yearlyCreatedIssuesSearchRequest(LocalDate date) {
     return new SearchRequest()
       .setCreatedAfter(isoFormat(date.minusYears(1)))
       .setCreatedBefore(isoFormat(date))
+      .setTypes(List.of(BUG.name(), VULNERABILITY.name()))
+      .setResolved(Boolean.FALSE.toString())
       .setFacets(List.of("createdAt"));
   }
 
