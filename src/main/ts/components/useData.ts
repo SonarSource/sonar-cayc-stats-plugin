@@ -8,17 +8,15 @@ import { scaleLinear, ScaleLinear, scaleTime, ScaleTime } from 'd3-scale';
 import { differenceInMonths, isSameMonth } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { getIssues } from '../api';
-import { HEIGHT, WIDTH } from '../constants';
+import { GRAPH_HEIGHT, GRAPH_WIDTH } from '../constants';
 import { computeCaycStartingDate } from './utils';
 
 function computeIssuesDecayForCaycPeriod(initialIssuesCount: number, caycPeriodInMonths: number) {
   // 20% fewer issues per year:
-  return initialIssuesCount * Math.pow(Math.pow(1 - 0.2, 1 / 12), caycPeriodInMonths)
+  return initialIssuesCount * Math.pow(Math.pow(1 - 0.2, 1 / 12), caycPeriodInMonths);
 }
 
-function generateProjection(data: Array<{ x: Date; y: number }>) {
-  const caycStartingDate = computeCaycStartingDate();
-
+function generateProjection(data: Array<{ x: Date; y: number }>, caycStartingDate: Date) {
   const caycStartingPointIndex = data.findIndex(({ x }) => isSameMonth(x, caycStartingDate));
 
   const caycStartingPoint = caycStartingPointIndex > -1 ? data[caycStartingPointIndex] : data[0];
@@ -37,13 +35,15 @@ export default function useData(): [
   Array<{ x: Date; y: number }>,
   Array<{ x: Date; y: number }>,
   ScaleTime<number, number>,
-  ScaleLinear<number, number>
+  ScaleLinear<number, number>,
+  Date
 ] {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<Array<{ x: Date; y: number }>>([]);
   const [projection, setProjection] = useState<Array<{ x: Date; y: number }>>([]);
   const [xScale, setXScale] = useState<ScaleTime<number, number>>(scaleTime());
   const [yScale, setYScale] = useState<ScaleLinear<number, number>>(scaleLinear());
+  const caycStartingDate = computeCaycStartingDate();
 
   useEffect(() => {
     (async () => {
@@ -59,16 +59,16 @@ export default function useData(): [
       });
 
       setData(cumulative);
-      setProjection(generateProjection(cumulative));
+      setProjection(generateProjection(cumulative, caycStartingDate));
 
       // x scale
       const dateRange = extent(cumulative, (d) => d.x) as [Date, Date];
-      const timeScale = scaleTime().range([0, WIDTH]).domain(dateRange).clamp(false);
+      const timeScale = scaleTime().range([0, GRAPH_WIDTH]).domain(dateRange).clamp(false);
       setXScale(() => timeScale);
 
       // y scale
       const linearScale = scaleLinear()
-        .range([HEIGHT - 16, 0])
+        .range([GRAPH_HEIGHT - 16, 0])
         .domain([0, total * 1.5])
         .nice();
       setYScale(() => linearScale);
@@ -77,5 +77,5 @@ export default function useData(): [
     })();
   }, []);
 
-  return [loading, data, projection, xScale, yScale];
+  return [loading, data, projection, xScale, yScale, caycStartingDate];
 }

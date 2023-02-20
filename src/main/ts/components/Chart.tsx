@@ -4,13 +4,13 @@
  * mailto:info AT sonarsource DOT com
  */
 import styled from '@emotion/styled';
+import { format } from 'date-fns';
 import { t as translate } from 'i18n';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CAYC_PERIOD_IN_MONTHS, HEIGHT, WIDTH } from '../constants';
+import { CAYC_PERIOD_IN_MONTHS, GRAPH_HEIGHT, GRAPH_WIDTH } from '../constants';
 import ChartLine from './ChartLine';
-import ChartVericalMarkers from './ChartVerticalMarkers';
-import ChartXAxis from './ChartXAxis';
+import ChartVerticalMarker from './ChartVerticalMarker';
 import Spinner from './Spinner';
 import useData from './useData';
 
@@ -20,14 +20,14 @@ const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'
   stroke-width='1' fill='limegreen' stroke='limegreen'/%3e%3c/svg%3e`;
 
 export default function Chart() {
-  const [loading, data, projection, xScale, yScale] = useData();
+  const [loading, data, projection, xScale, yScale, caycStartingDate] = useData();
 
   if (loading) {
     return <Spinner />;
   }
 
-  const format = yScale.tickFormat(undefined, '~s');
-  const issuesDelta = format(data[data.length - 1].y - projection[projection.length - 1].y);
+  const formatYScale = yScale.tickFormat(undefined, '~s');
+  const issuesDelta = formatYScale(data[data.length - 1].y - projection[projection.length - 1].y);
 
   return (
     <div>
@@ -44,9 +44,18 @@ export default function Chart() {
         </Title>
       </div>
       <Aligned>
-        <svg height={HEIGHT} width={WIDTH + CHART_SIDEBAR_WIDTH}>
-          <ChartVericalMarkers xScale={xScale} />
-          <ChartXAxis xScale={xScale} />
+        <svg height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
+          <ChartVerticalMarker
+            xScale={xScale}
+            date={caycStartingDate}
+            dash={true}
+            label={format(caycStartingDate, 'MMM yyyy')}
+          />
+          <ChartVerticalMarker
+            xScale={xScale}
+            date={new Date()}
+            label={translate('cayc.chart.now')}
+          />
           <ChartLine data={projection} xScale={xScale} yScale={yScale} projection={true} />
           <ChartLine data={data} xScale={xScale} yScale={yScale} />
         </svg>
