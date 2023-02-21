@@ -4,12 +4,12 @@
  * mailto:info AT sonarsource DOT com
  */
 import styled from '@emotion/styled';
-import { format } from 'date-fns';
+import { format, formatDuration } from 'date-fns';
 import { t as translate } from 'i18n';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Select from 'react-select';
 import {
-  CAYC_PERIOD_IN_MONTHS,
   GRAPH_HEIGHT,
   GRAPH_VERTICAL_MARKER_DATE_FORMAT,
   GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET,
@@ -26,15 +26,33 @@ const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'
   stroke-width='1' fill='limegreen' stroke='limegreen'/%3e%3c/svg%3e`;
 
 export default function Chart() {
-  const { loading, data, projection, xScale, yScale, originDate, caycStartingDate, nowDate } =
-    useData();
+  const {
+    loading,
+    cumulativeData,
+    caycProjectionData,
+    xScale,
+    yScale,
+    caycAvailableDurations,
+    currentCaycDuration,
+    setCurrentCaycDuration,
+    caycStartingDate,
+    chartStartingDate,
+    chartEndDate,
+  } = useData();
 
   if (loading) {
     return <Spinner />;
   }
 
+  if (cumulativeData?.length === 0 || caycProjectionData?.length === 0) {
+    return null;
+  }
+
   const formatYScale = yScale.tickFormat(undefined, '~s');
-  const issuesDelta = formatYScale(data[data.length - 1].y - projection[projection.length - 1].y);
+  const issuesDelta = formatYScale(
+    cumulativeData[cumulativeData.length - 1].y -
+      caycProjectionData[caycProjectionData.length - 1].y
+  );
 
   return (
     <div>
@@ -44,16 +62,28 @@ export default function Chart() {
             id="cayc.chart.title"
             defaultMessage={translate('cayc.chart.title')}
             values={{
-              cayc: <strong>{translate('cayc')}</strong>,
-              count: CAYC_PERIOD_IN_MONTHS / 12, // CaYC period is in months
+              cayc: (
+                <LeftPadded>
+                  <strong>{translate('cayc')}</strong>
+                </LeftPadded>
+              ),
             }}
           />
+          <LeftPadded>
+            <Select
+              isSearchable={false}
+              value={currentCaycDuration}
+              onChange={(option) => option && setCurrentCaycDuration(option)}
+              options={caycAvailableDurations}
+              getOptionLabel={(option) => `For ${formatDuration(option.duration)}`}
+            />
+          </LeftPadded>
         </Title>
       </div>
       <Aligned>
         <Graph height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
           <text textAnchor="left" x={0} dy={GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET}>
-            {format(originDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
+            {format(chartStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
           </text>
           <ChartVerticalMarker
             xScale={xScale}
@@ -61,9 +91,15 @@ export default function Chart() {
             dash={true}
             label={format(caycStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
           />
-          <ChartVerticalMarker xScale={xScale} date={nowDate} label={translate('cayc.chart.now')} />
-          <ChartLine data={projection} xScale={xScale} yScale={yScale} projection={true} />
-          <ChartLine data={data} xScale={xScale} yScale={yScale} />
+          {cumulativeData.length > 0 && (
+            <ChartVerticalMarker
+              xScale={xScale}
+              date={chartEndDate}
+              label={translate('cayc.chart.now')}
+            />
+          )}
+          <ChartLine data={caycProjectionData} xScale={xScale} yScale={yScale} projection={true} />
+          <ChartLine data={cumulativeData} xScale={xScale} yScale={yScale} />
         </Graph>
         <GraphAnnotation>
           <img aria-hidden={true} alt="arrow" src={ARROW} />
@@ -86,10 +122,16 @@ export default function Chart() {
   );
 }
 
+const LeftPadded = styled.span({
+  marginLeft: '8px',
+});
+
 const Title = styled.h1({
   fontSize: '1.5rem',
   marginTop: '0.5rem',
   marginBottom: '5rem',
+  display: 'flex',
+  alignItems: 'center',
 });
 
 const Aligned = styled.div({
