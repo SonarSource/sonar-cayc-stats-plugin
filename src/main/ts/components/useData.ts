@@ -5,86 +5,113 @@
  */
 import { extent } from 'd3-array';
 import { scaleLinear, ScaleLinear, scaleTime, ScaleTime } from 'd3-scale';
-import { differenceInMonths, isSameMonth, subMonths } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { sub, subMonths } from 'date-fns';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { getIssues } from '../api';
-import { CAYC_PERIOD_IN_MONTHS, GRAPH_HEIGHT, GRAPH_WIDTH } from '../constants';
+import { GRAPH_HEIGHT, GRAPH_WIDTH } from '../constants';
+import { durationToMonths, generateCaycProjectionData } from './utils';
 
 interface UseDataReturn {
   loading: boolean;
-  data: Array<{ x: Date; y: number }>;
-  projection: Array<{ x: Date; y: number }>;
+  cumulativeData: Array<{ x: Date; y: number }>;
+  caycProjectionData: Array<{ x: Date; y: number }>;
   xScale: ScaleTime<number, number>;
   yScale: ScaleLinear<number, number>;
-  originDate: Date;
+  caycAvailableDurations: AvailableDuration[];
+  currentCaycDuration: AvailableDuration | undefined;
+  setCurrentCaycDuration: Dispatch<SetStateAction<AvailableDuration>>;
   caycStartingDate: Date;
-  nowDate: Date;
+  chartStartingDate: Date;
+  chartEndDate: Date;
 }
 
-function computeIssuesDecayForCaycPeriod(initialIssuesCount: number, caycPeriodInMonths: number) {
-  // 20% fewer issues per year:
-  return initialIssuesCount * Math.pow(Math.pow(1 - 0.2, 1 / 12), caycPeriodInMonths);
-}
+const CAYC_DURATIONS: Duration[] = [
+  { months: 6 },
+  { years: 1 },
+  { years: 2 },
+  { years: 5 },
+  { years: 10 },
+];
 
-function generateProjection(data: Array<{ x: Date; y: number }>, caycStartingDate: Date) {
-  const caycStartingPointIndex = data.findIndex(({ x }) => isSameMonth(x, caycStartingDate));
-
-  const caycStartingPoint = caycStartingPointIndex > -1 ? data[caycStartingPointIndex] : data[0];
-
-  return data.slice(caycStartingPointIndex).map(({ x }) => {
-    const caycPeriodInMonths = differenceInMonths(x, caycStartingPoint.x);
-
-    const issuesCount = computeIssuesDecayForCaycPeriod(caycStartingPoint.y, caycPeriodInMonths);
-
-    return { x, y: Math.round(issuesCount) };
-  });
+export interface AvailableDuration {
+  duration: Duration;
+  value: number;
 }
 
 export default function useData(): UseDataReturn {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<Array<{ x: Date; y: number }>>([]);
-  const [projection, setProjection] = useState<Array<{ x: Date; y: number }>>([]);
+  const [cumulativeData, setCumulativeData] = useState<Array<{ x: Date; y: number }>>([]);
   const [xScale, setXScale] = useState<ScaleTime<number, number>>(scaleTime());
   const [yScale, setYScale] = useState<ScaleLinear<number, number>>(scaleLinear());
-  const [originDate, setOriginDate] = useState<Date>(new Date());
+  const [caycAvailableDurations, setCaycAvailableDurations] = useState<AvailableDuration[]>([]);
+  const [currentCaycDuration, setCurrentCaycDuration] = useState<AvailableDuration>();
+  const [caycProjectionData, setCaycProjectionData] = useState<Array<{ x: Date; y: number }>>([]);
   const [caycStartingDate, setCaycStartingDate] = useState<Date>(new Date());
-  const [nowDate, setNowDate] = useState<Date>(new Date());
+  const [chartDateRange, setChartDateRange] = useState<[Date, Date]>([new Date(), new Date()]);
 
   useEffect(() => {
     (async () => {
-      const result = await getIssues();
+      const issueRepartitionData = await getIssues();
 
-      let total = 0;
-      const cumulative = result.map(({ x, y }) => {
-        total += y;
+      let cumulativeIssueCount = 0;
+      const cumulativeData = issueRepartitionData.map(({ x, y }) => {
+        cumulativeIssueCount += y;
         return {
           x,
-          y: total,
+          y: cumulativeIssueCount,
         };
       });
 
-      const caycStart = subMonths(cumulative[cumulative.length - 1].x, CAYC_PERIOD_IN_MONTHS);
-      setOriginDate(cumulative[0].x);
-      setCaycStartingDate(caycStart);
-      setNowDate(cumulative[cumulative.length - 1].x);
-      setData(cumulative);
-      setProjection(generateProjection(cumulative, caycStart));
+      setCumulativeData(cumulativeData);
 
       // x scale
-      const dateRange = extent(cumulative, (d) => d.x) as [Date, Date];
+      const dateRange = extent(cumulativeData, (d) => d.x) as [Date, Date];
       const timeScale = scaleTime().range([0, GRAPH_WIDTH]).domain(dateRange).clamp(false);
       setXScale(() => timeScale);
+      setChartDateRange(dateRange);
 
       // y scale
       const linearScale = scaleLinear()
         .range([GRAPH_HEIGHT - 16, 0])
-        .domain([0, total * 1.5])
+        .domain([0, cumulativeIssueCount * 1.5])
         .nice();
       setYScale(() => linearScale);
+
+      // cayc available periods
+      const [chartStartDate, chartEndDate] = dateRange;
+      const caycAvailablePeriods = CAYC_DURATIONS.filter(
+        (duration) => chartStartDate < sub(chartEndDate, duration)
+      ).map((duration, i) => ({ duration, value: i }));
+      setCaycAvailableDurations(caycAvailablePeriods);
+      setCurrentCaycDuration(caycAvailablePeriods[caycAvailablePeriods.length - 1]);
 
       setLoading(false);
     })();
   }, []);
 
-  return { loading, data, projection, xScale, yScale, originDate, caycStartingDate, nowDate };
+  useEffect(() => {
+    (() => {
+      const [_chartStartDate, chartEndDate] = chartDateRange;
+      const caycStartingDate = subMonths(
+        chartEndDate,
+        durationToMonths(currentCaycDuration?.duration)
+      );
+      setCaycStartingDate(caycStartingDate);
+      setCaycProjectionData(generateCaycProjectionData(cumulativeData, caycStartingDate));
+    })();
+  }, [cumulativeData, chartDateRange, currentCaycDuration]);
+
+  return {
+    loading,
+    cumulativeData,
+    caycProjectionData,
+    xScale,
+    yScale,
+    caycAvailableDurations,
+    currentCaycDuration,
+    setCurrentCaycDuration,
+    caycStartingDate,
+    chartStartingDate: chartDateRange[0],
+    chartEndDate: chartDateRange[1],
+  };
 }
