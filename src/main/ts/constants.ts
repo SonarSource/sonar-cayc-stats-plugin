@@ -8,4 +8,5 @@ export const GRAPH_WIDTH = 500;
 export const GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET = -20;
 export const GRAPH_VERTICAL_MARKER_DATE_FORMAT = 'MMM yyyy';
 
-export const CAYC_PERIOD_IN_MONTHS = 24;
+// 20% fewer issues per year: 0.2
+export const CAYC_DECAY_PER_YEAR = 0.2;
