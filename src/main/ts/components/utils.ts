@@ -17,10 +17,7 @@ export function computeIssuesDecayForCaycPeriod(
   initialIssuesCount: number,
   caycPeriodInMonths: number
 ) {
-  return (
-    initialIssuesCount *
-    Math.pow(Math.pow(1 - CAYC_DECAY_PER_YEAR, 1 / monthsInYear), caycPeriodInMonths)
-  );
+  return initialIssuesCount * Math.pow(1 - CAYC_DECAY_PER_YEAR, caycPeriodInMonths / monthsInYear);
 }
 
 export function generateCaycProjectionData(
