@@ -13,13 +13,28 @@ interface Props {
   date: Date;
   dash?: boolean;
   label: string;
+  displayLabelBelow?: boolean;
 }
 
-export default function ChartVerticalMarker({ xScale, date, dash, label }: Props) {
+export default function ChartVerticalMarker({
+  xScale,
+  date,
+  dash = false,
+  label,
+  displayLabelBelow = false,
+}: Props) {
   const markerLocation = xScale(date);
   return (
     <g>
-      <text textAnchor="middle" x={markerLocation} dy={GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET}>
+      <text
+        textAnchor="middle"
+        x={markerLocation}
+        y={
+          displayLabelBelow
+            ? GRAPH_HEIGHT + GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET + 5
+            : -GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET
+        }
+      >
         {label}
       </text>
       <VerticalMarker

@@ -13,10 +13,17 @@ interface Props {
   data: Array<{ x: Date; y: number }>;
   xScale: ScaleTime<number, number>;
   yScale: ScaleLinear<number, number>;
+  chartEndDate: Date;
   projection?: boolean;
 }
 
-export default function ChartLine({ data, xScale, yScale, projection = false }: Props) {
+export default function ChartLine({
+  data,
+  xScale,
+  yScale,
+  chartEndDate,
+  projection = false,
+}: Props) {
   const lineGenerator = line<{ x: Date; y: number }>()
     .defined((d) => Boolean(d.y || d.y === 0))
     .x((d) => xScale(d.x))
@@ -26,7 +33,8 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
 
   const format = yScale.tickFormat(undefined, '~s');
 
-  const nowX = xScale(new Date());
+  const nowX = xScale(chartEndDate);
+  const y = yScale(data[data.length - 1].y);
 
   return (
     <g>
@@ -37,17 +45,17 @@ export default function ChartLine({ data, xScale, yScale, projection = false }: 
       <Border
         width={130}
         height={20}
-        x={nowX + 4}
-        y={yScale(data[data.length - 1].y)}
+        x={nowX + 5}
+        y={y - 15}
         style={{
           fill: projection ? '#6cd46c' : 'none',
           stroke: projection ? '#6cd46c' : '#f0878e',
         }}
       />
-      <text x={nowX} y={yScale(data[data.length - 1].y)} dx={12} dy={14}>
+      <text x={nowX} y={y} dx={10}>
         {projection ? t('cayc.chart.with_cayc') : t('cayc.chart.current_state')}
       </text>
-      <text x={nowX} dx={152} dy={14} y={yScale(data[data.length - 1].y)}>
+      <text x={nowX} y={y} dx={152}>
         {format(data[data.length - 1].y)} issues
       </text>
     </g>
