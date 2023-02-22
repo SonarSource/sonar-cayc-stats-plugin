@@ -82,7 +82,7 @@ export default function Chart() {
       </div>
       <Aligned>
         <Graph height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
-          <text textAnchor="left" x={0} dy={GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET}>
+          <text textAnchor="left" x={0} dy={-GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET}>
             {format(chartStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
           </text>
           <ChartVerticalMarker
@@ -90,6 +90,7 @@ export default function Chart() {
             date={caycStartingDate}
             dash={true}
             label={format(caycStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
+            displayLabelBelow={true}
           />
           {cumulativeData.length > 0 && (
             <ChartVerticalMarker
@@ -98,8 +99,19 @@ export default function Chart() {
               label={translate('cayc.chart.now')}
             />
           )}
-          <ChartLine data={caycProjectionData} xScale={xScale} yScale={yScale} projection={true} />
-          <ChartLine data={cumulativeData} xScale={xScale} yScale={yScale} />
+          <ChartLine
+            data={cumulativeData}
+            xScale={xScale}
+            yScale={yScale}
+            chartEndDate={chartEndDate}
+          />
+          <ChartLine
+            data={caycProjectionData}
+            xScale={xScale}
+            yScale={yScale}
+            chartEndDate={chartEndDate}
+            projection={true}
+          />
         </Graph>
         <GraphAnnotation>
           <img aria-hidden={true} alt="arrow" src={ARROW} />
