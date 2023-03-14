@@ -144,6 +144,7 @@ const Title = styled.h1({
   marginBottom: '5rem',
   display: 'flex',
   alignItems: 'center',
+  lineHeight: '2rem',
 });
 
 const Aligned = styled.div({
