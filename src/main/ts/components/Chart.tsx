@@ -5,7 +5,7 @@
  */
 import styled from '@emotion/styled';
 import { format, formatDuration } from 'date-fns';
-import { t as translate } from 'i18n';
+import { t as translate, tp as translateWithParameters } from 'i18n';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
@@ -75,7 +75,12 @@ export default function Chart() {
               value={currentCaycDuration}
               onChange={(option) => option && setCurrentCaycDuration(option)}
               options={caycAvailableDurations}
-              getOptionLabel={(option) => `For ${formatDuration(option.duration)}`}
+              getOptionLabel={(option) =>
+                translateWithParameters(
+                  'cayc.chart.title.period_option',
+                  formatDuration(option.duration)
+                )
+              }
             />
           </LeftPadded>
         </Title>
