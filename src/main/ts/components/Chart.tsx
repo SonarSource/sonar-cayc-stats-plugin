@@ -45,7 +45,7 @@ export default function Chart() {
   }
 
   if (cumulativeData?.length === 0 || caycProjectionData?.length === 0) {
-    return null;
+    return translate('cayc.no_data');
   }
 
   const formatYScale = yScale.tickFormat(undefined, '~s');
