@@ -127,8 +127,7 @@ export default function Chart() {
                 id="cayc.chart.fewer_issues"
                 defaultMessage={translate('cayc.chart.fewer_issues')}
                 values={{
-                  count: <IssuesDeltaCount>{issuesDelta}</IssuesDeltaCount>,
-                  fewer: <strong>{translate('fewer')}</strong>,
+                  count: <strong>{issuesDelta}</strong>,
                 }}
               />
             </Paragraph>
@@ -160,11 +159,6 @@ const Aligned = styled.div({
 const Paragraph = styled.p({
   fontSize: '1.1rem',
   margin: '1rem',
-});
-
-const IssuesDeltaCount = styled.span({
-  color: '#236a97',
-  fontWeight: 'bold',
 });
 
 const Graph = styled.svg({
