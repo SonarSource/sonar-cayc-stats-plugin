@@ -12,7 +12,7 @@ export default function CaycPresentation() {
   return (
     <Grid>
       <CenteredItem>
-        <Illustration aria-hidden={true} src="/images/source-code.svg" />
+        <Illustration aria-hidden={true} src="/static/cayc/images/CaYC.svg" />
       </CenteredItem>
       <div>
         <Title>
