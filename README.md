@@ -2,6 +2,10 @@
 
 SonarQube plugin showcasing the Clean as You Code approach to development
 
+## Compatibility
+
+The plugin is compatible with SonarQube 8.9 and later versions.
+
 ## Building
 
 To build the plugin JAR file, call:
