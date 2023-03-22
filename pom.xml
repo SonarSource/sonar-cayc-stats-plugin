@@ -101,7 +101,7 @@
           <pluginName>Clean as You Code</pluginName>
           <pluginDescription>Plugin showcasing the Clean as You Code approach to development</pluginDescription>
           <pluginClass>org.sonar.plugin.cayc.CleanAsYouCodePlugin</pluginClass>
-          <sonarQubeMinVersion>9.5</sonarQubeMinVersion>
+          <sonarQubeMinVersion>8.9</sonarQubeMinVersion>
         </configuration>
       </plugin>
       <plugin>
