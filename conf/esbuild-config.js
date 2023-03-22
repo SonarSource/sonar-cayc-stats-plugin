@@ -18,10 +18,8 @@ module.exports = (release) => ({
   target: TARGET_BROWSERS,
   plugins: [
     importAsGlobals({
-      'date-fns': 'DateFns',
       react: 'React',
       'react-dom': 'ReactDOM',
-      'react-intl': 'ReactIntl',
       'sonar-request': 'SonarRequest',
       i18n: 'window',
     }),

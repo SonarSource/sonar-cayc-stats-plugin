@@ -6,7 +6,7 @@
 import styled from '@emotion/styled';
 import { ScaleLinear, ScaleTime } from 'd3-scale';
 import { curveBasis, line } from 'd3-shape';
-import { t } from 'i18n';
+import { t as translate } from 'i18n';
 import React from 'react';
 
 interface Props {
@@ -53,7 +53,7 @@ export default function ChartLine({
         }}
       />
       <text x={nowX} y={y} dx={10}>
-        {projection ? t('cayc.chart.with_cayc') : t('cayc.chart.current_state')}
+        {projection ? translate('cayc.chart.with_cayc') : translate('cayc.chart.current_state')}
       </text>
       <text x={nowX} y={y} dx={152}>
         {format(data[data.length - 1].y)} issues
