@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>65.0.218</version>
+    <version>59.0.214</version>
   </parent>
 
   <groupId>org.sonarsource.plugins.cayc</groupId>
