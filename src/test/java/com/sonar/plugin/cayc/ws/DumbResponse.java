@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-package org.sonar.plugin.cayc.ws;
+package com.sonar.plugin.cayc.ws;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

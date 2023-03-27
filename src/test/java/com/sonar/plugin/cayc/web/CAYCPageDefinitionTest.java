@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-package org.sonar.plugin.cayc.web;
+package com.sonar.plugin.cayc.web;
 
 import org.junit.Test;
 import org.sonar.api.web.page.Context;

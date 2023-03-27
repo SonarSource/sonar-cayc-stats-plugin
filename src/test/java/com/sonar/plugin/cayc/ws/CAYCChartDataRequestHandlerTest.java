@@ -3,19 +3,17 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-package org.sonar.plugin.cayc.ws;
+package com.sonar.plugin.cayc.ws;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.assertj.core.api.Assertions;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.stubbing.OngoingStubbing;
 import org.sonar.api.server.ws.Request;
 import org.sonar.api.server.ws.Response;
 import org.sonarqube.ws.Common.Facet;

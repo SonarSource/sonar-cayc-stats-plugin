@@ -3,7 +3,7 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-package org.sonar.plugin.cayc.ws.exceptions;
+package com.sonar.plugin.cayc.ws.exceptions;
 
 public class InvalidRequestException extends Exception {
 
