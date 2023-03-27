@@ -3,12 +3,12 @@
  * All rights reserved
  * mailto:info AT sonarsource DOT com
  */
-package org.sonar.plugin.cayc;
+package com.sonar.plugin.cayc;
 
+import com.sonar.plugin.cayc.ws.CAYCChartDataRequestHandler;
+import com.sonar.plugin.cayc.ws.CAYCWebService;
 import org.sonar.api.Plugin;
-import org.sonar.plugin.cayc.web.CAYCPageDefinition;
-import org.sonar.plugin.cayc.ws.CAYCChartDataRequestHandler;
-import org.sonar.plugin.cayc.ws.CAYCWebService;
+import com.sonar.plugin.cayc.web.CAYCPageDefinition;
 
 /**
  * This class is the entry point for all extensions. It is referenced in pom.xml.
