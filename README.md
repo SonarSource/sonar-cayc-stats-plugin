@@ -1,6 +1,6 @@
 # sonar-cayc-stats-plugin
 
-SonarQube plugin showcasing the Clean as You Code approach to development
+Demonstrates the value of Clean as You Code methodology
 
 ## Compatibility
 
