@@ -14,6 +14,12 @@
   <artifactId>sonar-cayc-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>1.0.1-SNAPSHOT</version>
+  <scm>
+    <url>https://github.com/SonarSource/sonar-cayc-stats-plugin</url>
+  </scm>
+  <issueManagement>
+    <url>https://sonarsource.atlassian.net/jira/software/c/projects/CAYCPLUGIN</url>
+  </issueManagement>
 
   <name>Clean as You Code Plugin</name>
   <description>Demonstrates the value of Clean as You Code methodology</description>
