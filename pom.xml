@@ -20,6 +20,11 @@
   <issueManagement>
     <url>https://sonarsource.atlassian.net/jira/software/c/projects/CAYCPLUGIN</url>
   </issueManagement>
+  <licenses>
+    <license>
+      <name>SonarSource License</name>
+    </license>
+  </licenses>
 
   <name>Clean as You Code Plugin</name>
   <description>Demonstrates the value of Clean as You Code methodology</description>
