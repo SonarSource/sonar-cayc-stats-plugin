@@ -13,7 +13,7 @@
   <groupId>com.sonarsource.plugins.cayc</groupId>
   <artifactId>sonar-cayc-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>Clean as You Code Plugin</name>
   <description>SonarQube plugin showcasing the Clean as You Code approach to development</description>
