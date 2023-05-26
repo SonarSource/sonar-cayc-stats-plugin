@@ -45,7 +45,7 @@ export default function Chart() {
   }
 
   if (cumulativeData?.length === 0 || caycProjectionData?.length === 0) {
-    return translate('cayc.no_data');
+    return <p>{translate('cayc.no_data')}</p>;
   }
 
   const formatYScale = yScale.tickFormat(undefined, '~s');
@@ -57,7 +57,7 @@ export default function Chart() {
   return (
     <div>
       <div>
-        <Title>
+        <Title id="cayc.chart.title">
           <FormattedMessage
             id="cayc.chart.title"
             defaultMessage={translate('cayc.chart.title')}
@@ -71,6 +71,7 @@ export default function Chart() {
           />
           <LeftPadded>
             <Select
+              aria-labelledby="cayc.chart.title"
               isSearchable={false}
               value={currentCaycDuration}
               onChange={(option) => option && setCurrentCaycDuration(option)}
@@ -81,6 +82,20 @@ export default function Chart() {
                   formatDuration(option.duration)
                 )
               }
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  minHeight: '2rem',
+                }),
+                dropdownIndicator: (base) => ({
+                  ...base,
+                  padding: '0.25rem',
+                }),
+                option: (base) => ({
+                  ...base,
+                  padding: '0.25rem 0.5rem',
+                }),
+              }}
             />
           </LeftPadded>
         </Title>
@@ -143,12 +158,9 @@ const LeftPadded = styled.span({
 });
 
 const Title = styled.h1({
-  fontSize: '1.5rem',
-  marginTop: '0.5rem',
   marginBottom: '5rem',
   display: 'flex',
   alignItems: 'center',
-  lineHeight: '2rem',
 });
 
 const Aligned = styled.div({
@@ -157,7 +169,6 @@ const Aligned = styled.div({
 });
 
 const Paragraph = styled.p({
-  fontSize: '1.1rem',
   margin: '1rem',
 });
 

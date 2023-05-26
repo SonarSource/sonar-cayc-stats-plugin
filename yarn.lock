@@ -1647,6 +1647,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/dom@npm:>=7":
+  version: 9.3.0
+  resolution: "@testing-library/dom@npm:9.3.0"
+  dependencies:
+    "@babel/code-frame": ^7.10.4
+    "@babel/runtime": ^7.12.5
+    "@types/aria-query": ^5.0.1
+    aria-query: ^5.0.0
+    chalk: ^4.1.0
+    dom-accessibility-api: ^0.5.9
+    lz-string: ^1.5.0
+    pretty-format: ^27.0.2
+  checksum: 790f4da6a8cbe7da8b7769e81e68caea1aed5b5f1973b808895692a945fb854fe8acdc66ffc34b6a57ec49bad9d76ccdd69b632ea8a82ad61d1e97d76cfdf9ec
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.0.0, @testing-library/dom@npm:^8.11.1":
   version: 8.19.0
   resolution: "@testing-library/dom@npm:8.19.0"
@@ -5786,6 +5802,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lz-string@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "lz-string@npm:1.5.0"
+  bin:
+    lz-string: bin/bin.js
+  checksum: 1ee98b4580246fd90dd54da6e346fb1caefcf05f677c686d9af237a157fdea3fd7c83a4bc58f858cd5b10a34d27afe0fdcbd0505a47e0590726a873dc8b8f65d
+  languageName: node
+  linkType: hard
+
 "make-dir@npm:^3.0.0":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
@@ -6587,6 +6612,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-select-event@npm:5.5.1":
+  version: 5.5.1
+  resolution: "react-select-event@npm:5.5.1"
+  dependencies:
+    "@testing-library/dom": ">=7"
+  checksum: af0e43927eab54545b699c817480cb38cebb0432ea743c869d06e426bc5ccc8788d4e2da4741b63022c20282b87a1620cd1dcc79051c442ff291e41b604e02ca
+  languageName: node
+  linkType: hard
+
 "react-select@npm:*, react-select@npm:5.7.0":
   version: 5.7.0
   resolution: "react-select@npm:5.7.0"
@@ -7012,6 +7046,8 @@ __metadata:
     react-dom: 16.14.0
     react-intl: 3.12.1
     react-select: 5.7.0
+    react-select-event: 5.5.1
+    testing-library-selector: 0.2.1
     typescript: 4.9.5
   languageName: unknown
   linkType: soft
@@ -7258,6 +7294,15 @@ __metadata:
     glob: ^7.1.4
     minimatch: ^3.0.4
   checksum: 3b34a3d77165a2cb82b34014b3aba93b1c4637a5011807557dc2f3da826c59975a5ccad765721c4648b39817e3472789f9b0fa98fc854c5c1c7a1e632aacdc28
+  languageName: node
+  linkType: hard
+
+"testing-library-selector@npm:0.2.1":
+  version: 0.2.1
+  resolution: "testing-library-selector@npm:0.2.1"
+  peerDependencies:
+    "@testing-library/dom": ^8.2.0
+  checksum: 4bb6d071f20b89f7954b03addd6c97479817e348c5a63f2c40693a5a93010b40418d90e30c0dfd7dc2a05e2f66a880ff4b1fa9004e7def5fbf489130b70b050b
   languageName: node
   linkType: hard
 

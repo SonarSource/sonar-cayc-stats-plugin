@@ -25,14 +25,13 @@ const Container = styled.div({
   display: 'flex',
   flexDirection: 'column',
   maxWidth: '1280px',
-  margin: '48px auto',
-  fontSize: '14px',
+  margin: '0 auto',
 });
 
 const Card = styled.div({
   backgroundColor: 'white',
   border: '1px solid #e6e6e6',
   borderRadius: '4px',
-  margin: '16px 32px',
+  marginTop: '16px',
   padding: '32px',
 });

@@ -5,6 +5,9 @@
  */
 import { screen } from '@testing-library/react';
 import React from 'react';
+import selectEvent from 'react-select-event';
+import { byRole, byTestId } from 'testing-library-selector';
+import { getIssues } from '../../api';
 import { renderComponent } from '../../testHelpers';
 import CleanAsYouCode from '../CleanAsYouCode';
 
@@ -22,6 +25,11 @@ jest.mock('../../api', () => {
   };
 });
 
+const ui = {
+  select: byRole('combobox', { name: /cayc.chart.title/ }),
+  projectionCurve: byTestId('cayc-projection-data'),
+};
+
 it('should render correctly', async () => {
   renderComponent(<CleanAsYouCode />);
 
@@ -34,4 +42,26 @@ it('should render correctly', async () => {
   expect(screen.getByText('cayc.description.principles.leak')).toBeInTheDocument();
   expect(screen.getByText('cayc.description.principles.impact')).toBeInTheDocument();
   expect(screen.getByText('cayc.description.demo_intro')).toBeInTheDocument();
+  expect(screen.getByText('cayc.chart.title')).toBeInTheDocument();
+});
+
+it('should render correctly without any data', async () => {
+  jest.mocked(getIssues).mockResolvedValueOnce([]);
+  renderComponent(<CleanAsYouCode />);
+
+  expect(await screen.findByText('cayc.no_data')).toBeInTheDocument();
+});
+
+it('should properly render the projection curve', async () => {
+  renderComponent(<CleanAsYouCode />);
+
+  expect(await screen.findByText('cayc.chart.title')).toBeInTheDocument();
+
+  const projection = ui.projectionCurve.get().getAttribute('d');
+
+  await selectEvent.select(ui.select.get(), 'cayc.chart.title.period_option.6 months');
+
+  const projection2 = ui.projectionCurve.get().getAttribute('d');
+
+  expect(projection).not.toEqual(projection2);
 });
