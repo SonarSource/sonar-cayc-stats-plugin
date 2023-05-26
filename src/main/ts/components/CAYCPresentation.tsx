@@ -56,21 +56,15 @@ const Illustration = styled.img({
 });
 
 const Title = styled.h1({
-  fontSize: '1.5rem',
-  marginTop: '1.5rem',
-  marginBottom: '2.5rem',
+  marginBottom: '2rem',
 });
 
 const Paragraph = styled.p({
-  fontSize: '1rem',
-  marginTop: '1.5rem',
-  marginBottom: '1.5rem',
+  marginTop: '1rem',
 });
 
 const List = styled.ul({
-  fontSize: '1rem',
   marginTop: '1.5rem',
-  marginBottom: '1.5rem',
   listStyleType: '"-\\00A0"', // Non Breakable Space character
   listStylePosition: 'inside',
 });

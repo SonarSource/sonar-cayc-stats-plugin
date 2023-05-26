@@ -50,6 +50,8 @@
     "jest-environment-jsdom": "29.5.0",
     "jest-junit": "15.0.0",
     "prettier": "2.8.4",
+    "react-select-event": "5.5.1",
+    "testing-library-selector": "0.2.1",
     "typescript": "4.9.5"
   },
   "scripts": {

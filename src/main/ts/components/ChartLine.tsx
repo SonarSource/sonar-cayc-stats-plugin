@@ -41,6 +41,7 @@ export default function ChartLine({
       <Line
         d={lineGenerator(data) || undefined}
         style={{ stroke: projection ? '#6cd46c' : '#f0878e' }}
+        data-testid={projection ? 'cayc-projection-data' : null}
       />
       <Border
         width={130}
