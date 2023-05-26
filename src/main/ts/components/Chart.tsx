@@ -56,7 +56,7 @@ export default function Chart() {
 
   return (
     <div>
-      <div>
+      <Column>
         <Title id="cayc.chart.title">
           <FormattedMessage
             id="cayc.chart.title"
@@ -98,8 +98,11 @@ export default function Chart() {
               }}
             />
           </LeftPadded>
+          <Information>
+            The data displayed here is based on the projects you have access to only.
+          </Information>
         </Title>
-      </div>
+      </Column>
       <Aligned>
         <Graph height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
           <text textAnchor="left" x={0} dy={-GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET}>
@@ -158,14 +161,33 @@ const LeftPadded = styled.span({
 });
 
 const Title = styled.h1({
-  marginBottom: '5rem',
+  fontSize: '1.5rem',
+  marginTop: '0.5rem',
   display: 'flex',
   alignItems: 'center',
+  lineHeight: '2rem',
 });
 
 const Aligned = styled.div({
   display: 'flex',
   alignItems: 'stretch',
+});
+
+const Column = styled.div({
+  marginBottom: '5rem',
+});
+
+const Information = styled.div({
+  border: '1px solid rgb(177, 223, 243)',
+  borderRadius: '2px',
+  marginTop: '1rem',
+  marginBottom: '1rem',
+  padding: '0.5rem',
+  backgroundColor: 'rgb(217, 237, 247)',
+  color: 'rgb(14, 81, 111)',
+  width: 'fit-content',
+  fontSize: '13px',
+  marginLeft: 'auto',
 });
 
 const Paragraph = styled.p({
