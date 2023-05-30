@@ -4,10 +4,10 @@
  * mailto:info AT sonarsource DOT com
  */
 import styled from '@emotion/styled';
-import {format, formatDuration} from 'date-fns';
-import {t as translate, tp as translateWithParameters} from 'i18n';
+import { format, formatDuration } from 'date-fns';
+import { t as translate, tp as translateWithParameters } from 'i18n';
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import {
   GRAPH_HEIGHT,
@@ -178,11 +178,10 @@ const Row = styled.div({
 
 const Information = styled.div({
   border: '1px solid rgb(177, 223, 243)',
-  borderRadius: '2px',
+  borderRadius: '0.125rem',
   padding: '0.5rem',
   backgroundColor: 'rgb(217, 237, 247)',
   color: 'rgb(14, 81, 111)',
-  width: 'fit-content',
 });
 
 const Paragraph = styled.p({
