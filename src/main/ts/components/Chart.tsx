@@ -173,6 +173,7 @@ const Row = styled.div({
   display: 'flex',
   alignItems: 'center',
   gap: '1rem',
+  justifyContent: 'space-between',
 });
 
 const Information = styled.div({
@@ -182,7 +183,6 @@ const Information = styled.div({
   backgroundColor: 'rgb(217, 237, 247)',
   color: 'rgb(14, 81, 111)',
   width: 'fit-content',
-  marginLeft: 'auto',
 });
 
 const Paragraph = styled.p({
