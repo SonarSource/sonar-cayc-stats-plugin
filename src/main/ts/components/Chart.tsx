@@ -135,7 +135,7 @@ export default function Chart() {
           />
         </Graph>
         <GraphAnnotation>
-          <img aria-hidden={true} alt="arrow" src={ARROW}/>
+          <img aria-hidden={true} alt="arrow" src={ARROW} />
           <IssuesDeltaText>
             <Paragraph>{translate('cayc.chart.nudge')}</Paragraph>
             <Paragraph>
@@ -159,10 +159,8 @@ const LeftPadded = styled.span({
 });
 
 const Title = styled.h1({
-  fontSize: '1.5rem',
   display: 'flex',
   alignItems: 'center',
-  lineHeight: '2rem',
 });
 
 const Aligned = styled.div({
