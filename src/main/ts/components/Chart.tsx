@@ -4,10 +4,10 @@
  * mailto:info AT sonarsource DOT com
  */
 import styled from '@emotion/styled';
-import { format, formatDuration } from 'date-fns';
-import { t as translate, tp as translateWithParameters } from 'i18n';
+import {format, formatDuration} from 'date-fns';
+import {t as translate, tp as translateWithParameters} from 'i18n';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import Select from 'react-select';
 import {
   GRAPH_HEIGHT,
@@ -56,7 +56,7 @@ export default function Chart() {
 
   return (
     <div>
-      <Column>
+      <Row>
         <Title id="cayc.chart.title">
           <FormattedMessage
             id="cayc.chart.title"
@@ -98,11 +98,9 @@ export default function Chart() {
               }}
             />
           </LeftPadded>
-          <Information>
-            The data displayed here is based on the projects you have access to only.
-          </Information>
         </Title>
-      </Column>
+        <Information>{translate('cayc.chart.data.disclaimer')}</Information>
+      </Row>
       <Aligned>
         <Graph height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
           <text textAnchor="left" x={0} dy={-GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET}>
@@ -137,7 +135,7 @@ export default function Chart() {
           />
         </Graph>
         <GraphAnnotation>
-          <img aria-hidden={true} alt="arrow" src={ARROW} />
+          <img aria-hidden={true} alt="arrow" src={ARROW}/>
           <IssuesDeltaText>
             <Paragraph>{translate('cayc.chart.nudge')}</Paragraph>
             <Paragraph>
@@ -162,7 +160,6 @@ const LeftPadded = styled.span({
 
 const Title = styled.h1({
   fontSize: '1.5rem',
-  marginTop: '0.5rem',
   display: 'flex',
   alignItems: 'center',
   lineHeight: '2rem',
@@ -173,20 +170,20 @@ const Aligned = styled.div({
   alignItems: 'stretch',
 });
 
-const Column = styled.div({
+const Row = styled.div({
   marginBottom: '5rem',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
 });
 
 const Information = styled.div({
   border: '1px solid rgb(177, 223, 243)',
   borderRadius: '2px',
-  marginTop: '1rem',
-  marginBottom: '1rem',
   padding: '0.5rem',
   backgroundColor: 'rgb(217, 237, 247)',
   color: 'rgb(14, 81, 111)',
   width: 'fit-content',
-  fontSize: '13px',
   marginLeft: 'auto',
 });
 
