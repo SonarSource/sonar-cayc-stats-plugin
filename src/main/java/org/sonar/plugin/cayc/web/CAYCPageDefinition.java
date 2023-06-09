@@ -17,10 +17,19 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-export const GRAPH_HEIGHT = 300;
-export const GRAPH_WIDTH = 500;
-export const GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET = 15;
-export const GRAPH_VERTICAL_MARKER_DATE_FORMAT = 'MMM yyyy';
+package org.sonar.plugin.cayc.web;
 
-// 20% fewer issues per year: 0.2
-export const CAYC_DECAY_PER_YEAR = 0.2;
+import org.sonar.api.web.page.Context;
+import org.sonar.api.web.page.Page;
+import org.sonar.api.web.page.PageDefinition;
+
+public class CAYCPageDefinition implements PageDefinition {
+
+  @Override
+  public void define(Context context) {
+    context
+      .addPage(Page.builder("cayc/stats")
+        .setName("Clean as You Code")
+        .build());
+  }
+}

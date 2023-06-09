@@ -17,10 +17,24 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-export const GRAPH_HEIGHT = 300;
-export const GRAPH_WIDTH = 500;
-export const GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET = 15;
-export const GRAPH_VERTICAL_MARKER_DATE_FORMAT = 'MMM yyyy';
+package org.sonar.plugin.cayc.ws;
 
-// 20% fewer issues per year: 0.2
-export const CAYC_DECAY_PER_YEAR = 0.2;
+import org.sonar.api.server.ws.WebService;
+
+public class CAYCWebService implements WebService {
+
+  @Override
+  public void define(Context context) {
+    chartDataAction(context);
+  }
+
+  private void chartDataAction(Context context) {
+    NewController controller = context.createController("api/cayc");
+    controller.setDescription("Clean as You Code metrics");
+    controller.createAction("issues_creation_histogram")
+      .setDescription("Data for the Clean as You Code chart")
+      .setHandler(new CAYCChartDataRequestHandler())
+      .setInternal(true);
+    controller.done();
+  }
+}

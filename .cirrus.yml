@@ -10,7 +10,7 @@ env:
   ARTIFACTORY_DEPLOY_USERNAME: vault-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer
   ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
   #Possible values for ARTIFACTORY_DEPLOY_REPO: sonarsource-private-qa, sonarsource-public-qa
-  ARTIFACTORY_DEPLOY_REPO: sonarsource-private-qa
+  ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
   ARTIFACTORY_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader access_token]
   # burgr notification
   BURGR_URL: VAULT[development/kv/data/burgr data.url]
@@ -48,7 +48,7 @@ build_task:
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   build_script:
-    - source cirrus-env BUILD-PRIVATE
+    - source cirrus-env BUILD
     - regular_mvn_build_deploy_analyze
   cleanup_before_cache_script: cleanup_maven_repository
 
@@ -67,7 +67,7 @@ promote_task:
     PROMOTE_URL: VAULT[development/kv/data/promote data.url]
     GITHUB_TOKEN: VAULT[development/github/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promotion token]
     #artifacts that will have downloadable links in burgr
-    ARTIFACTS: com.sonarsource.plugins.cayc:sonar-cayc-plugin:jar
+    ARTIFACTS: org.sonarsource.plugins.cayc:sonar-cayc-plugin:jar
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   script: cirrus_promote_maven
