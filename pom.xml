@@ -5,15 +5,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.sonarsource.parent</groupId>
+    <groupId>org.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>59.0.214</version>
+    <version>68.0.0.247</version>
   </parent>
 
-  <groupId>com.sonarsource.plugins.cayc</groupId>
+  <groupId>org.sonarsource.plugins.cayc</groupId>
   <artifactId>sonar-cayc-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
   <scm>
     <url>https://github.com/SonarSource/sonar-cayc-stats-plugin</url>
   </scm>
@@ -107,7 +107,7 @@
           <pluginKey>cayc</pluginKey>
           <pluginName>Clean as You Code</pluginName>
           <pluginDescription>Demonstrates the value of Clean as You Code methodology</pluginDescription>
-          <pluginClass>com.sonar.plugin.cayc.CleanAsYouCodePlugin</pluginClass>
+          <pluginClass>org.sonar.plugin.cayc.CleanAsYouCodePlugin</pluginClass>
           <sonarQubeMinVersion>8.9</sonarQubeMinVersion>
         </configuration>
       </plugin>

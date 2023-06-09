@@ -15,5 +15,5 @@ jobs:
     uses: SonarSource/gh-action_release/.github/workflows/main.yaml@v5
     with:
       publishToBinaries: true
-      mavenCentralSync: false
+      mavenCentralSync: true
       slackChannel: team-sonarqube-build

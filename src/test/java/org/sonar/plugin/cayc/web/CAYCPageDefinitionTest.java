@@ -17,10 +17,26 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-export const GRAPH_HEIGHT = 300;
-export const GRAPH_WIDTH = 500;
-export const GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET = 15;
-export const GRAPH_VERTICAL_MARKER_DATE_FORMAT = 'MMM yyyy';
+package org.sonar.plugin.cayc.web;
 
-// 20% fewer issues per year: 0.2
-export const CAYC_DECAY_PER_YEAR = 0.2;
+import org.junit.Test;
+import org.sonar.api.web.page.Context;
+import org.sonar.api.web.page.Page;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+public class CAYCPageDefinitionTest {
+
+  private final CAYCPageDefinition underTest = new CAYCPageDefinition();
+
+  @Test
+  public void testDefineIsCalled() {
+    Context context = mock(Context.class);
+
+    underTest.define(context);
+
+    verify(context).addPage(any(Page.class));
+  }
+}
