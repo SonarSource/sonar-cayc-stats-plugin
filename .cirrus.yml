@@ -52,6 +52,35 @@ build_task:
     - regular_mvn_build_deploy_analyze
   cleanup_before_cache_script: cleanup_maven_repository
 
+mend_scan_task:
+  only_if: >-
+    $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*")
+  timeout_in: 30m
+  eks_container:
+    <<: *CONTAINER_DEFINITION
+    cpu: 2
+    memory: 4Gb
+  env:
+    WS_APIKEY: VAULT[development/kv/data/mend data.apikey]
+    WS_WSS_URL: VAULT[development/kv/data/mend data.url]
+    WS_USERKEY: VAULT[development/kv/data/mend data.userKey]
+    SLACK_WEBHOOK_SQ: VAULT[development/kv/data/slack data.webhook]
+  maven_cache:
+    folder: ${CIRRUS_WORKING_DIR}/.m2/repository
+  mend_script:
+    - source cirrus-env BUILD_NUMBER
+    - source set_maven_build_version $BUILD_NUMBER
+    - mvn clean install -DskipTests
+    - source ws_scan.sh
+  cleanup_before_cache_script: cleanup_maven_repository
+  allow_failures: "true"
+  on_failure:
+    slack_notification_script:
+      - ./.cirrus/cirrus-mend-notifications.sh
+  always:
+    ws_artifacts:
+      path: "whitesource/**/*"
+
 promote_task:
   depends_on:
     - build
