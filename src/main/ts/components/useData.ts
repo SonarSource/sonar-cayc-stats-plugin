@@ -26,9 +26,10 @@ import { GRAPH_HEIGHT, GRAPH_WIDTH } from '../constants';
 import { durationToMonths, generateCaycProjectionData } from './utils';
 
 interface UseDataReturn {
-  loading: boolean;
+  isLoading: boolean;
   cumulativeData: Array<{ x: Date; y: number }>;
   caycProjectionData: Array<{ x: Date; y: number }>;
+  hasRequestFailed: boolean;
   xScale: ScaleTime<number, number>;
   yScale: ScaleLinear<number, number>;
   caycAvailableDurations: AvailableDuration[];
@@ -53,7 +54,8 @@ export interface AvailableDuration {
 }
 
 export default function useData(): UseDataReturn {
-  const [loading, setLoading] = useState(true);
+  const [hasRequestFailed, setHasRequestFailed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [cumulativeData, setCumulativeData] = useState<Array<{ x: Date; y: number }>>([]);
   const [xScale, setXScale] = useState<ScaleTime<number, number>>(scaleTime());
   const [yScale, setYScale] = useState<ScaleLinear<number, number>>(scaleLinear());
@@ -65,7 +67,15 @@ export default function useData(): UseDataReturn {
 
   useEffect(() => {
     (async () => {
-      const issueRepartitionData = await getIssues();
+      let issueRepartitionData;
+
+      try {
+        issueRepartitionData = await getIssues();
+      } catch (e) {
+        setHasRequestFailed(true);
+        setIsLoading(false);
+        return;
+      }
 
       let cumulativeIssueCount = 0;
       const cumulativeData = issueRepartitionData.map(({ x, y }) => {
@@ -99,7 +109,7 @@ export default function useData(): UseDataReturn {
       setCaycAvailableDurations(caycAvailablePeriods);
       setCurrentCaycDuration(caycAvailablePeriods[caycAvailablePeriods.length - 1]);
 
-      setLoading(false);
+      setIsLoading(false);
     })();
   }, []);
 
@@ -116,9 +126,10 @@ export default function useData(): UseDataReturn {
   }, [cumulativeData, chartDateRange, currentCaycDuration]);
 
   return {
-    loading,
+    isLoading,
     cumulativeData,
     caycProjectionData,
+    hasRequestFailed,
     xScale,
     yScale,
     caycAvailableDurations,

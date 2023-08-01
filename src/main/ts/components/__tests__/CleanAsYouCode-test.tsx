@@ -66,6 +66,17 @@ it('should render correctly without any data', async () => {
   expect(await screen.findByText('cayc.no_data')).toBeInTheDocument();
 });
 
+it('should render correctly when data fetch failed', async () => {
+  jest
+    .mocked(getIssues)
+    .mockRejectedValueOnce({
+      errors: [{ msg: 'An error has occurred. Please contact your administrator' }],
+    });
+  renderComponent(<CleanAsYouCode />);
+
+  expect(await screen.findByText('cayc.request_failed')).toBeInTheDocument();
+});
+
 it('should properly render the projection curve', async () => {
   renderComponent(<CleanAsYouCode />);
 
