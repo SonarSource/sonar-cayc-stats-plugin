@@ -41,9 +41,10 @@ const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'
 
 export default function Chart() {
   const {
-    loading,
+    isLoading,
     cumulativeData,
     caycProjectionData,
+    hasRequestFailed,
     xScale,
     yScale,
     caycAvailableDurations,
@@ -54,8 +55,12 @@ export default function Chart() {
     chartEndDate,
   } = useData();
 
-  if (loading) {
+  if (isLoading) {
     return <Spinner />;
+  }
+
+  if (hasRequestFailed) {
+    return <p>{translate('cayc.request_failed')}</p>;
   }
 
   if (cumulativeData?.length === 0 || caycProjectionData?.length === 0) {
