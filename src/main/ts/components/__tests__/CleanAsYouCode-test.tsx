@@ -56,6 +56,10 @@ it('should render correctly', async () => {
   expect(screen.getByText('cayc.description.principles.leak')).toBeInTheDocument();
   expect(screen.getByText('cayc.description.principles.impact')).toBeInTheDocument();
   expect(screen.getByText('cayc.description.demo_intro')).toBeInTheDocument();
+  expect(screen.getByTestId('cayc-illustration')).toHaveAttribute(
+    'src',
+    '/myBaseUrl/static/cayc/images/CaYC.svg'
+  );
   expect(screen.getByText('cayc.chart.title')).toBeInTheDocument();
 });
 

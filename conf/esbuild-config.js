@@ -36,6 +36,7 @@ module.exports = (release) => ({
       'react-dom': 'ReactDOM',
       'sonar-request': 'SonarRequest',
       i18n: 'window',
+      'sonar-config': 'window'
     }),
   ],
 });
