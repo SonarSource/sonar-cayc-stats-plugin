@@ -67,47 +67,49 @@ export default function useData(): UseDataReturn {
 
   useEffect(() => {
     (async () => {
+      let issueRepartitionData;
+
       try {
-        const issueRepartitionData = await getIssues();
-
-        setHasRequestFailed(false);
-
-        let cumulativeIssueCount = 0;
-        const cumulativeData = issueRepartitionData.map(({ x, y }) => {
-          cumulativeIssueCount += y;
-          return {
-            x,
-            y: cumulativeIssueCount,
-          };
-        });
-
-        setCumulativeData(cumulativeData);
-
-        // x scale
-        const dateRange = extent(cumulativeData, (d) => d.x) as [Date, Date];
-        const timeScale = scaleTime().range([0, GRAPH_WIDTH]).domain(dateRange).clamp(false);
-        setXScale(() => timeScale);
-        setChartDateRange(dateRange);
-
-        // y scale
-        const linearScale = scaleLinear()
-          .range([GRAPH_HEIGHT - 16, 0])
-          .domain([0, cumulativeIssueCount * 1.5])
-          .nice();
-        setYScale(() => linearScale);
-
-        // cayc available periods
-        const [chartStartDate, chartEndDate] = dateRange;
-        const caycAvailablePeriods = CAYC_DURATIONS.filter(
-          (duration) => chartStartDate < sub(chartEndDate, duration)
-        ).map((duration, i) => ({ duration, value: i }));
-        setCaycAvailableDurations(caycAvailablePeriods);
-        setCurrentCaycDuration(caycAvailablePeriods[caycAvailablePeriods.length - 1]);
+        issueRepartitionData = await getIssues();
       } catch (e) {
         setHasRequestFailed(true);
-      } finally {
         setIsLoading(false);
+        return;
       }
+
+      let cumulativeIssueCount = 0;
+      const cumulativeData = issueRepartitionData.map(({ x, y }) => {
+        cumulativeIssueCount += y;
+        return {
+          x,
+          y: cumulativeIssueCount,
+        };
+      });
+
+      setCumulativeData(cumulativeData);
+
+      // x scale
+      const dateRange = extent(cumulativeData, (d) => d.x) as [Date, Date];
+      const timeScale = scaleTime().range([0, GRAPH_WIDTH]).domain(dateRange).clamp(false);
+      setXScale(() => timeScale);
+      setChartDateRange(dateRange);
+
+      // y scale
+      const linearScale = scaleLinear()
+        .range([GRAPH_HEIGHT - 16, 0])
+        .domain([0, cumulativeIssueCount * 1.5])
+        .nice();
+      setYScale(() => linearScale);
+
+      // cayc available periods
+      const [chartStartDate, chartEndDate] = dateRange;
+      const caycAvailablePeriods = CAYC_DURATIONS.filter(
+        (duration) => chartStartDate < sub(chartEndDate, duration)
+      ).map((duration, i) => ({ duration, value: i }));
+      setCaycAvailableDurations(caycAvailablePeriods);
+      setCurrentCaycDuration(caycAvailablePeriods[caycAvailablePeriods.length - 1]);
+
+      setIsLoading(false);
     })();
   }, []);
 
