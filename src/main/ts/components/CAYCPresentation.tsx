@@ -21,12 +21,17 @@ import styled from '@emotion/styled';
 import { t as translate } from 'i18n';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { baseUrl } from 'sonar-config';
 
 export default function CaycPresentation() {
   return (
     <Grid>
       <CenteredItem>
-        <Illustration aria-hidden={true} src="/static/cayc/images/CaYC.svg" />
+        <Illustration
+          data-testid="cayc-illustration"
+          aria-hidden={true}
+          src={`${baseUrl}/static/cayc/images/CaYC.svg`}
+        />
       </CenteredItem>
       <div>
         <Title>

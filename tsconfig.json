@@ -3,10 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "sonar-request": ["src/main/ts/@types/sonar-request.d.ts"],
-      "*": ["node_modules/*", "node_modules/@types/*"]
-    },
-    // "typeRoots": ["src/main/ts/sonar-request.d.ts"]
+      "*": ["./src/main/ts/@types/*"]
+    }
   },
   "include": ["./src/main/ts/**/*"],
 }
