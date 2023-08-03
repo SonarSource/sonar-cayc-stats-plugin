@@ -26,12 +26,6 @@ container_definition: &CONTAINER_DEFINITION
   region: eu-central-1
   namespace: default
 
-only_sonarsource_qa: &ONLY_SONARSOURCE_QA
-  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "dogfood-on-.*")
-
-except_nightly_task_template: &EXCEPT_ON_NIGHTLY_TASK_TEMPLATE
-  only_if: $CIRRUS_CRON != $NIGHTLY_CRON
-
 build_task:
   eks_container:
     <<: *CONTAINER_DEFINITION
@@ -53,8 +47,7 @@ build_task:
   cleanup_before_cache_script: cleanup_maven_repository
 
 mend_scan_task:
-  only_if: >-
-    $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*")
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*") && $CIRRUS_CRON != $NIGHTLY_CRON
   timeout_in: 30m
   eks_container:
     <<: *CONTAINER_DEFINITION
@@ -84,8 +77,8 @@ mend_scan_task:
 promote_task:
   depends_on:
     - build
-  <<: *ONLY_SONARSOURCE_QA
-  <<: *EXCEPT_ON_NIGHTLY_TASK_TEMPLATE
+    - mend_scan
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*") && $CIRRUS_CRON != $NIGHTLY_CRON
   eks_container:
     <<: *CONTAINER_DEFINITION
     cpu: 0.5
