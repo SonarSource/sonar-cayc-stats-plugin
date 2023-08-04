@@ -23,13 +23,9 @@ import { t as translate, tp as translateWithParameters } from 'i18n';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
-import {
-  GRAPH_HEIGHT,
-  GRAPH_VERTICAL_MARKER_DATE_FORMAT,
-  GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET,
-  GRAPH_WIDTH,
-} from '../constants';
+import { GRAPH_HEIGHT, GRAPH_VERTICAL_MARKER_DATE_FORMAT, GRAPH_WIDTH } from '../constants';
 import ChartLine from './ChartLine';
+import ChartVerticalLabel from './ChartVerticalLabel';
 import ChartVerticalMarker from './ChartVerticalMarker';
 import Spinner from './Spinner';
 import useData from './useData';
@@ -122,21 +118,24 @@ export default function Chart() {
       </Row>
       <Aligned>
         <Graph height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
-          <text textAnchor="left" x={0} dy={-GRAPH_VERTICAL_MARKER_Y_POSITION_OFFSET}>
-            {format(chartStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
-          </text>
+          <ChartVerticalLabel
+            label={format(chartStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
+            labelYOffsetLevel={3}
+            x={0}
+          />
           <ChartVerticalMarker
             xScale={xScale}
             date={caycStartingDate}
             dash={true}
             label={format(caycStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
-            displayLabelBelow={true}
+            labelYOffsetLevel={2}
           />
           {cumulativeData.length > 0 && (
             <ChartVerticalMarker
               xScale={xScale}
               date={chartEndDate}
               label={translate('cayc.chart.now')}
+              labelYOffsetLevel={1}
             />
           )}
           <ChartLine

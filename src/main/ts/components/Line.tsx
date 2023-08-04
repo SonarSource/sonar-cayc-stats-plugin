@@ -17,11 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-export const GRAPH_HEIGHT = 300;
-export const GRAPH_WIDTH = 500;
-export const GRAPH_VERTICAL_LABEL_LEFT_MARGIN = 10;
-export const GRAPH_VERTICAL_LABEL_Y_BASE_OFFSET = 15;
-export const GRAPH_VERTICAL_MARKER_DATE_FORMAT = 'MMM yyyy';
+import styled from '@emotion/styled';
 
-// 20% fewer issues per year: 0.2
-export const CAYC_DECAY_PER_YEAR = 0.2;
+const Line = styled.line((props: { dash?: boolean; thin?: boolean }) => ({
+  stroke: '#c3c3c3',
+  strokeWidth: props.thin ? '1px' : '2px',
+  strokeDasharray: props.dash ? '4,6' : '',
+}));
+
+export default Line;

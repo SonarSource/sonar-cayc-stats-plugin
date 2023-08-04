@@ -17,11 +17,17 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-export const GRAPH_HEIGHT = 300;
-export const GRAPH_WIDTH = 500;
-export const GRAPH_VERTICAL_LABEL_LEFT_MARGIN = 10;
-export const GRAPH_VERTICAL_LABEL_Y_BASE_OFFSET = 15;
-export const GRAPH_VERTICAL_MARKER_DATE_FORMAT = 'MMM yyyy';
+import React, { ComponentProps } from 'react';
+import Line from './Line';
 
-// 20% fewer issues per year: 0.2
-export const CAYC_DECAY_PER_YEAR = 0.2;
+interface VerticalLineProps extends ComponentProps<typeof Line> {
+  length: number;
+  x: number;
+  y: number;
+}
+
+export default function VerticalLine(props: VerticalLineProps) {
+  const { length, x, y, ...lineProps } = props;
+
+  return <Line x1={x} x2={x} y1={y} y2={y + length} {...lineProps} />;
+}

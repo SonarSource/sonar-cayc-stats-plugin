@@ -17,33 +17,34 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { ScaleTime } from 'd3-scale';
 import React from 'react';
-import { GRAPH_HEIGHT } from '../constants';
-import ChartVerticalLabel from './ChartVerticalLabel';
+import { GRAPH_VERTICAL_LABEL_LEFT_MARGIN, GRAPH_VERTICAL_LABEL_Y_BASE_OFFSET } from '../constants';
+import Line from './Line';
 import VerticalLine from './VerticalLine';
 
-interface Props {
-  xScale: ScaleTime<number, number>;
-  date: Date;
-  dash?: boolean;
+interface ChartVerticalLabelProps {
   label: string;
   labelYOffsetLevel: number;
+  x: number;
 }
 
-export default function ChartVerticalMarker({
-  xScale,
-  date,
-  dash = false,
-  label,
-  labelYOffsetLevel,
-}: Props) {
-  const markerLocation = xScale(date);
+export default function ChartVerticalLabel(props: ChartVerticalLabelProps) {
+  const { label, labelYOffsetLevel, x } = props;
+  const textY = -GRAPH_VERTICAL_LABEL_Y_BASE_OFFSET * labelYOffsetLevel;
 
   return (
     <g>
-      <ChartVerticalLabel label={label} labelYOffsetLevel={labelYOffsetLevel} x={markerLocation} />
-      <VerticalLine dash={dash} length={GRAPH_HEIGHT} x={markerLocation} y={0} />
+      <text dominantBaseline="middle" x={x + GRAPH_VERTICAL_LABEL_LEFT_MARGIN} y={textY}>
+        {label}
+      </text>
+      <VerticalLine thin={true} length={-textY} x={x} y={textY} />
+      <Line
+        thin={true}
+        x1={x}
+        x2={x + GRAPH_VERTICAL_LABEL_LEFT_MARGIN * (2 / 3)}
+        y1={textY}
+        y2={textY}
+      />
     </g>
   );
 }
