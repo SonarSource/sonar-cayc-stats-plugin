@@ -63,7 +63,7 @@ mend_scan_task:
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   mend_script:
-    - source cirrus-env BUILD_NUMBER
+    - source cirrus-env MEND
     - source set_maven_build_version $BUILD_NUMBER
     - mvn clean install -DskipTests
     - source ws_scan.sh
@@ -79,7 +79,6 @@ mend_scan_task:
 promote_task:
   depends_on:
     - build
-    - mend_scan
   only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*") && $CIRRUS_CRON != $NIGHTLY_CRON
   eks_container:
     <<: *CONTAINER_DEFINITION
