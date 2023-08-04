@@ -47,6 +47,8 @@ build_task:
   cleanup_before_cache_script: cleanup_maven_repository
 
 mend_scan_task:
+  depends_on:
+    - build
   only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*") && $CIRRUS_CRON != $NIGHTLY_CRON
   timeout_in: 30m
   eks_container:
