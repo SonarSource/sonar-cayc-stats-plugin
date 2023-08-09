@@ -70,7 +70,12 @@ export default function ChartLine({
       <text x={nowX} y={y} dx={10}>
         {projection ? translate('cayc.chart.with_cayc') : translate('cayc.chart.current_state')}
       </text>
-      <text x={nowX} y={y} dx={152}>
+      <text
+        aria-label={projection ? 'Projected issues count' : 'Current issues count'}
+        x={nowX}
+        y={y}
+        dx={152}
+      >
         {format(data[data.length - 1].y)} issues
       </text>
     </g>
