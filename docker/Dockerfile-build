@@ -1,0 +1,35 @@
+ARG CIRRUS_AWS_ACCOUNT=275878209202
+
+FROM ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
+
+USER root
+
+ARG CHROME_VERSION="google-chrome-stable"
+
+#https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
+RUN mkdir -p /usr/share/man/man1 \
+    && apt-get update \
+    && apt-get install -qqy \
+        xvfb ${CHROME_VERSION}
+
+#==============================================================================
+# Chrome Launch Script Wrapper
+#==============================================================================
+COPY docker/wrap_chrome_binary /opt/bin/wrap_chrome_binary
+RUN /opt/bin/wrap_chrome_binary
+
+#==============================================================================
+# Chrome webdriver, used to drive Chrome from Selenium
+#==============================================================================
+RUN CHROME_DRIVER_VERSION=$(curl "https://chromedriver.storage.googleapis.com/LATEST_RELEASE") \
+  && wget --no-verbose -O /tmp/chromedriver_linux64.zip "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip" \
+  && rm -rf /opt/selenium/chromedriver \
+  && mkdir -p /opt/selenium \
+  && unzip /tmp/chromedriver_linux64.zip -d /opt/selenium \
+  && rm /tmp/chromedriver_linux64.zip \
+  && mv /opt/selenium/chromedriver /usr/bin/chromedriver \
+  && chmod 755 /usr/bin/chromedriver
+
+
+# Back to the user of the base image
+USER sonarsource

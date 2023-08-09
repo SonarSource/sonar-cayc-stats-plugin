@@ -20,11 +20,28 @@ env:
   CIRRUS_SHELL: bash
   NIGHTLY_CRON: 'nightly'
 
+
 container_definition: &CONTAINER_DEFINITION
-  image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j11-latest
   cluster_name: ${CIRRUS_CLUSTER_NAME}
   region: eu-central-1
   namespace: default
+  builder_subnet_id: ${CIRRUS_AWS_SUBNET}
+  builder_role: cirrus-builder
+  builder_image: docker-builder-v*
+  builder_instance_type: t2.small
+  dockerfile: docker/Dockerfile-build
+  cpu: 1
+  memory: 2Gb
+
+postgres_additional_container_template: &POSTGRES_ADDITIONAL_CONTAINER_TEMPLATE
+  name: postgres
+  image: public.ecr.aws/docker/library/postgres:15
+  port: 5432
+  cpu: 1
+  memory: 1Gb
+  env:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
 
 build_task:
   eks_container:
@@ -44,7 +61,11 @@ build_task:
   build_script:
     - source cirrus-env BUILD
     - regular_mvn_build_deploy_analyze
-  cleanup_before_cache_script: cleanup_maven_repository
+  on_failure:
+    reports_artifacts:
+      paths:
+        - "**/target/**/logs/*"
+        - "**/target/surefire-reports/**/*"
 
 mend_scan_task:
   depends_on:
@@ -67,7 +88,6 @@ mend_scan_task:
     - source set_maven_build_version $BUILD_NUMBER
     - mvn clean install -DskipTests
     - source ws_scan.sh
-  cleanup_before_cache_script: cleanup_maven_repository
   allow_failures: "true"
   on_failure:
     slack_notification_script:
@@ -75,6 +95,30 @@ mend_scan_task:
   always:
     ws_artifacts:
       path: "whitesource/**/*"
+
+black_box_test_task:
+  depends_on: build
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*")
+  eks_container:
+    <<: *CONTAINER_DEFINITION
+    cpu: 1.5
+    memory: 3Gb
+    additional_containers:
+      - <<: *POSTGRES_ADDITIONAL_CONTAINER_TEMPLATE
+  env:
+    matrix:
+      - SQ_VERSION: LATEST_RELEASE[9.9]
+      - SQ_VERSION: LATEST_RELEASE
+      - SQ_VERSION: DEV
+  maven_cache:
+    folder: ${CIRRUS_WORKING_DIR}/.m2/repository
+  bbt_script:
+    - mvn verify -Pblack-box-tests -Dsonar.runtimeVersion=${SQ_VERSION} -Dorchestrator.configUrl=file:///$CIRRUS_WORKING_DIR/.cirrus/orchestrator.properties
+  on_failure:
+    reports_artifacts:
+      paths:
+        - "**/target/**/logs/*"
+        - "**/target/failsafe-reports/**/*"
 
 promote_task:
   depends_on:
@@ -95,4 +139,3 @@ promote_task:
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   script: cirrus_promote_maven
-  cleanup_before_cache_script: cleanup_maven_repository

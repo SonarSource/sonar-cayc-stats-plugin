@@ -36,6 +36,7 @@
     <sonar.coverage.exclusions>src/main/java/org/sonar/plugin/cayc/CleanAsYouCodePlugin.java</sonar.coverage.exclusions>
     <gitRepositoryName>sonar-cayc-stats-plugin</gitRepositoryName>
     <artifactsToPublish>${project.groupId}:sonar-cayc-plugin:jar</artifactsToPublish>
+    <orchestrator.version>4.0.0.404</orchestrator.version>
   </properties>
 
   <dependencies>
@@ -66,7 +67,7 @@
           <groupId>javax.annotation</groupId>
           <artifactId>javax.annotation-api</artifactId>
         </exclusion>
-      </exclusions> 
+      </exclusions>
     </dependency>
 
     <!-- unit tests -->
@@ -92,6 +93,30 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>3.24.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonarsource.orchestrator</groupId>
+      <artifactId>sonar-orchestrator</artifactId>
+      <version>${orchestrator.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonarsource.orchestrator</groupId>
+      <artifactId>sonar-orchestrator-junit4</artifactId>
+      <version>${orchestrator.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.5.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.codeborne</groupId>
+      <artifactId>selenide</artifactId>
+      <version>6.17.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -176,7 +201,76 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/bbt/java</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-resources</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>src/bbt/resources</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+        <id>black-box-tests</id>
+        <build>
+            <plugins>
+              <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-failsafe-plugin</artifactId>
+                  <executions>
+                      <execution>
+                          <id>run-black-box-tests</id>
+                          <goals>
+                              <goal>integration-test</goal>
+                              <goal>verify</goal>
+                          </goals>
+                          <configuration>
+                            <includes>
+                                  <include>**/*BBT.java</include>
+                            </includes>
+                          </configuration>
+                      </execution>
+                  </executions>
+              </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+
 
 </project>
