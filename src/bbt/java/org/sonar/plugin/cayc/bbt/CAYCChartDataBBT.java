@@ -50,7 +50,7 @@ public class CAYCChartDataBBT {
     .setSonarVersion(System.getProperty("sonar.runtimeVersion", "LATEST_RELEASE"))
     .addPlugin(CAYC_PLUGIN_LOCATION)
     .useDefaultAdminCredentialsForBuilds(true)
-    .addPlugin(MavenLocation.of("org.sonarsource.java", "sonar-java-plugin", "LATEST_RELEASE"))
+    .addBundledPluginToKeep("sonar-java")
     .build();
 
   @BeforeClass
