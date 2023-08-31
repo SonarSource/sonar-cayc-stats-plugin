@@ -37,6 +37,7 @@
     <gitRepositoryName>sonar-cayc-stats-plugin</gitRepositoryName>
     <artifactsToPublish>${project.groupId}:sonar-cayc-plugin:jar</artifactsToPublish>
     <orchestrator.version>4.1.0.495</orchestrator.version>
+    <skipFrontendTests>false</skipFrontendTests>
   </properties>
 
   <dependencies>
@@ -196,6 +197,7 @@
               <goal>yarn</goal>
             </goals>
             <configuration>
+              <skip>${skipFrontendTests}</skip>
               <arguments>test --coverage</arguments>
             </configuration>
           </execution>
@@ -240,6 +242,9 @@
   <profiles>
     <profile>
         <id>black-box-tests</id>
+        <properties>
+            <skipFrontendTests>true</skipFrontendTests>
+        </properties>
         <build>
             <plugins>
               <plugin>
