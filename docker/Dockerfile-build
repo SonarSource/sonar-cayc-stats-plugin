@@ -10,6 +10,7 @@ ARG CHROME_VERSION="google-chrome-stable"
 RUN mkdir -p /usr/share/man/man1 \
     && apt-get update \
     && apt-get install -qqy \
+        jq \
         xvfb ${CHROME_VERSION}
 
 #==============================================================================
@@ -21,13 +22,14 @@ RUN /opt/bin/wrap_chrome_binary
 #==============================================================================
 # Chrome webdriver, used to drive Chrome from Selenium
 #==============================================================================
-RUN CHROME_DRIVER_VERSION=$(curl "https://chromedriver.storage.googleapis.com/LATEST_RELEASE") \
-  && wget --no-verbose -O /tmp/chromedriver_linux64.zip "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip" \
+RUN CHROME_DRIVER_URL=$(curl "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" \
+    | jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64").url') \
+  && wget --no-verbose -O /tmp/chromedriver_linux64.zip $CHROME_DRIVER_URL \
   && rm -rf /opt/selenium/chromedriver \
   && mkdir -p /opt/selenium \
   && unzip /tmp/chromedriver_linux64.zip -d /opt/selenium \
   && rm /tmp/chromedriver_linux64.zip \
-  && mv /opt/selenium/chromedriver /usr/bin/chromedriver \
+  && mv /opt/selenium/chromedriver-linux64/chromedriver /usr/bin/chromedriver \
   && chmod 755 /usr/bin/chromedriver
 
 
