@@ -17,24 +17,19 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugin.cayc.ws;
+package org.sonar.plugin.cayc;
 
-import org.sonar.api.server.ws.WebService;
+import org.sonar.api.web.page.Context;
+import org.sonar.api.web.page.Page;
+import org.sonar.api.web.page.PageDefinition;
 
-public class CAYCWebService implements WebService {
+public class CAYCPageDefinition implements PageDefinition {
 
   @Override
   public void define(Context context) {
-    chartDataAction(context);
-  }
-
-  private void chartDataAction(Context context) {
-    NewController controller = context.createController("api/cayc");
-    controller.setDescription("Clean as You Code metrics");
-    controller.createAction("issues_creation_histogram")
-      .setDescription("Data for the Clean as You Code chart")
-      .setHandler(new CAYCChartDataRequestHandler())
-      .setInternal(true);
-    controller.done();
+    context
+      .addPage(Page.builder("cayc/stats")
+        .setName("Clean as You Code")
+        .build());
   }
 }

@@ -17,19 +17,27 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugin.cayc.web;
+package org.sonar.plugin.cayc;
 
+import org.junit.Test;
 import org.sonar.api.web.page.Context;
 import org.sonar.api.web.page.Page;
-import org.sonar.api.web.page.PageDefinition;
+import org.sonar.plugin.cayc.CAYCPageDefinition;
 
-public class CAYCPageDefinition implements PageDefinition {
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-  @Override
-  public void define(Context context) {
-    context
-      .addPage(Page.builder("cayc/stats")
-        .setName("Clean as You Code")
-        .build());
+public class CAYCPageDefinitionTest {
+
+  private final CAYCPageDefinition underTest = new CAYCPageDefinition();
+
+  @Test
+  public void testDefineIsCalled() {
+    Context context = mock(Context.class);
+
+    underTest.define(context);
+
+    verify(context).addPage(any(Page.class));
   }
 }
