@@ -70,7 +70,7 @@ build_task:
 mend_scan_task:
   depends_on:
     - build
-  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*") && $CIRRUS_CRON != $NIGHTLY_CRON
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*")
   timeout_in: 30m
   eks_container:
     <<: *CONTAINER_DEFINITION
