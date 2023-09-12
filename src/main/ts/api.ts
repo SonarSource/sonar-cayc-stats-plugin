@@ -19,7 +19,7 @@
  */
 import format from 'date-fns/format';
 import subYears from 'date-fns/subYears';
-import { getJSON } from 'sonar-request';
+import { getJSON, throwGlobalError } from 'sonar-request';
 
 const MAX_YEARS = 15;
 
@@ -32,6 +32,25 @@ interface Response {
   facets: Array<{ values: Values[] }>;
 }
 
+interface IssuesRequestData {
+  createdAfter: string;
+  createdBefore: string;
+  types: string;
+  resolved: string;
+  facets: string;
+  components?: string;
+}
+
+export interface Component {
+  key: string;
+  lastAnalysisDate: string;
+  managed: boolean;
+  name: string;
+  qualifier: string;
+  revision: string;
+  visibility: string;
+}
+
 const getDateMinusYears = (years: number) => {
   const date = new Date();
   const fixedTimezoneDate = new Date(date.valueOf() + date.getTimezoneOffset() * 60 * 1000);
@@ -39,20 +58,25 @@ const getDateMinusYears = (years: number) => {
   return fixedTimezoneDate;
 };
 
-const makeRequest = (date: Date) =>
-  getJSON('/api/issues/search', {
+const buildIssuesRequest = (date: Date, selectedProjects?: string) => {
+  const data: IssuesRequestData = {
     createdAfter: format(subYears(date, 1), 'yyyy-MM-dd'),
     createdBefore: format(date, 'yyyy-MM-dd'),
     types: 'BUG,VULNERABILITY',
     resolved: 'false',
     facets: 'createdAt',
-  }).then(({ facets }: Response) => facets[0].values);
+  };
+  if (selectedProjects) {
+    data.components = selectedProjects;
+  }
+  return getJSON('/api/issues/search', data).then(({ facets }: Response) => facets[0].values);
+};
 
-export function getIssues() {
+export function getIssues(selectedProject?: string) {
   const promises = [];
   for (let i = MAX_YEARS - 1; i >= 0; i--) {
     const date = getDateMinusYears(i);
-    promises.push(makeRequest(date));
+    promises.push(buildIssuesRequest(date, selectedProject));
   }
 
   let found = false;
@@ -72,4 +96,16 @@ export function getIssues() {
     });
     return chartData;
   });
+}
+
+export function getProjects(nameFilter: string) {
+  return getJSON(
+    '/api/components/search_projects',
+    nameFilter ? { filter: `query = "${nameFilter}"` } : undefined,
+  )
+    .then(({ components }: { components: Component[] }) => components)
+    .catch((error) => {
+      throwGlobalError(error);
+      return [];
+    });
 }

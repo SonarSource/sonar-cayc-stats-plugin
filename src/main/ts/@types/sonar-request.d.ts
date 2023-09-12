@@ -23,4 +23,5 @@ type RequestData = Dict<any>;
 
 declare module 'sonar-request' {
   export function getJSON(url: string, data?: RequestData, bypassRedirect?: boolean): Promise<any>;
+  export function throwGlobalError(param: Response | any): Promise<Response | any>;
 }

@@ -20,17 +20,21 @@
 import styled from '@emotion/styled';
 import { format, formatDuration } from 'date-fns';
 import { t as translate, tp as translateWithParameters } from 'i18n';
+import { debounce } from 'lodash';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
+import { getProjects } from '../api';
 import { GRAPH_HEIGHT, GRAPH_VERTICAL_MARKER_DATE_FORMAT, GRAPH_WIDTH } from '../constants';
 import ChartLine from './ChartLine';
 import ChartVerticalLabel from './ChartVerticalLabel';
 import ChartVerticalMarker from './ChartVerticalMarker';
 import Spinner from './Spinner';
-import useData from './useData';
+import useData, { DEFAULT_PROJECT, ProjectOption } from './useData';
 
 const CHART_SIDEBAR_WIDTH = 250;
+const DEBOUNCE_DELAY = 250;
 const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' 
   width='10' height='100'%3e%3cpath d='M5 99 L0 90 L5 90 L5 0 L6 0 L6 90 L10 90 L5 99' 
   stroke-width='1' fill='limegreen' stroke='limegreen'/%3e%3c/svg%3e`;
@@ -49,25 +53,51 @@ export default function Chart() {
     caycStartingDate,
     chartStartingDate,
     chartEndDate,
+    setSelectedProjects,
   } = useData();
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  const handleLoadProjects = (nameFilter: string, resolve: (options: ProjectOption[]) => void) => {
+    getProjects(nameFilter)
+      .then((components) => {
+        if (!components || components.length === 0) {
+          resolve([]);
+        }
+        const options = [
+          DEFAULT_PROJECT,
+          ...components.map(({ key, name }) => {
+            return {
+              value: key,
+              label: name,
+            } as ProjectOption;
+          }),
+        ];
+        resolve(options);
+      })
+      .catch(() => {
+        resolve([]);
+      });
+  };
+
+  const debouncedLoadProjects = React.useRef(debounce(handleLoadProjects, DEBOUNCE_DELAY));
+
+  const hasData =
+    cumulativeData?.length > 0 &&
+    caycProjectionData?.length > 0 &&
+    chartStartingDate &&
+    caycStartingDate;
 
   if (hasRequestFailed) {
     return <p>{translate('cayc.request_failed')}</p>;
   }
 
-  if (cumulativeData?.length === 0 || caycProjectionData?.length === 0) {
-    return <p>{translate('cayc.no_data')}</p>;
-  }
-
-  const formatYScale = yScale.tickFormat(undefined, '~s');
-  const issuesDelta = formatYScale(
-    cumulativeData[cumulativeData.length - 1].y -
-      caycProjectionData[caycProjectionData.length - 1].y
-  );
+  const issuesDelta = () =>
+    yScale.tickFormat(
+      undefined,
+      '~s',
+    )(
+      cumulativeData[cumulativeData.length - 1].y -
+        caycProjectionData[caycProjectionData.length - 1].y,
+    );
 
   return (
     <div>
@@ -77,16 +107,52 @@ export default function Chart() {
             id="cayc.chart.title"
             defaultMessage={translate('cayc.chart.title')}
             values={{
-              cayc: (
-                <LeftPadded>
-                  <strong>{translate('cayc')}</strong>
-                </LeftPadded>
-              ),
+              cayc: <strong>&nbsp;{translate('cayc')}&nbsp;</strong>,
             }}
           />
           <LeftPadded>
+            <AsyncSelect
+              aria-label={translate('cayc.project_select.label')}
+              isSearchable
+              isClearable
+              cacheOptions
+              defaultOptions
+              defaultValue={DEFAULT_PROJECT}
+              loadOptions={debouncedLoadProjects.current}
+              onChange={setSelectedProjects}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  minWidth: '15rem',
+                  minHeight: '2rem',
+                  height: '2rem',
+                }),
+                valueContainer: (base) => ({
+                  ...base,
+                  padding: '0 0.5rem',
+                }),
+                dropdownIndicator: (base) => ({
+                  ...base,
+                  padding: '0.25rem',
+                }),
+                clearIndicator: (base) => ({
+                  ...base,
+                  padding: '0.25rem',
+                }),
+                option: (base) => ({
+                  ...base,
+                  padding: '0.25rem 0.5rem',
+                }),
+                input: (base) => ({
+                  ...base,
+                  margin: '0',
+                }),
+              }}
+            />
+          </LeftPadded>
+          <LeftPadded>
             <Select
-              aria-labelledby="cayc.chart.title"
+              aria-label={translate('cayc.period_select.label')}
               isSearchable={false}
               value={currentCaycDuration}
               onChange={(option) => option && setCurrentCaycDuration(option)}
@@ -94,7 +160,7 @@ export default function Chart() {
               getOptionLabel={(option) =>
                 translateWithParameters(
                   'cayc.chart.title.period_option',
-                  formatDuration(option.duration)
+                  formatDuration(option.duration),
                 )
               }
               styles={{
@@ -114,59 +180,64 @@ export default function Chart() {
             />
           </LeftPadded>
         </Title>
-        <Information>{translate('cayc.chart.data.disclaimer')}</Information>
       </Row>
       <Aligned>
-        <Graph height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
-          <ChartVerticalLabel
-            label={format(chartStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
-            labelYOffsetLevel={3}
-            x={0}
-          />
-          <ChartVerticalMarker
-            xScale={xScale}
-            date={caycStartingDate}
-            dash={true}
-            label={format(caycStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
-            labelYOffsetLevel={2}
-          />
-          {cumulativeData.length > 0 && (
-            <ChartVerticalMarker
-              xScale={xScale}
-              date={chartEndDate}
-              label={translate('cayc.chart.now')}
-              labelYOffsetLevel={1}
-            />
-          )}
-          <ChartLine
-            data={cumulativeData}
-            xScale={xScale}
-            yScale={yScale}
-            chartEndDate={chartEndDate}
-          />
-          <ChartLine
-            data={caycProjectionData}
-            xScale={xScale}
-            yScale={yScale}
-            chartEndDate={chartEndDate}
-            projection={true}
-          />
-        </Graph>
-        <GraphAnnotation>
-          <img aria-hidden={true} alt="arrow" src={ARROW} />
-          <IssuesDeltaText>
-            <Paragraph>{translate('cayc.chart.nudge')}</Paragraph>
-            <Paragraph>
-              <FormattedMessage
-                id="cayc.chart.fewer_issues"
-                defaultMessage={translate('cayc.chart.fewer_issues')}
-                values={{
-                  count: <strong>{issuesDelta}</strong>,
-                }}
+        {hasData && !isLoading && (
+          <>
+            <Graph height={GRAPH_HEIGHT} width={GRAPH_WIDTH + CHART_SIDEBAR_WIDTH}>
+              <ChartVerticalLabel
+                label={format(chartStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
+                labelYOffsetLevel={3}
+                x={0}
               />
-            </Paragraph>
-          </IssuesDeltaText>
-        </GraphAnnotation>
+              <ChartVerticalMarker
+                xScale={xScale}
+                date={caycStartingDate}
+                dash
+                label={format(caycStartingDate, GRAPH_VERTICAL_MARKER_DATE_FORMAT)}
+                labelYOffsetLevel={2}
+              />
+              {cumulativeData.length > 0 && (
+                <ChartVerticalMarker
+                  xScale={xScale}
+                  date={chartEndDate}
+                  label={translate('cayc.chart.now')}
+                  labelYOffsetLevel={1}
+                />
+              )}
+              <ChartLine
+                data={cumulativeData}
+                xScale={xScale}
+                yScale={yScale}
+                chartEndDate={chartEndDate}
+              />
+              <ChartLine
+                data={caycProjectionData}
+                xScale={xScale}
+                yScale={yScale}
+                chartEndDate={chartEndDate}
+                projection
+              />
+            </Graph>
+            <GraphAnnotation>
+              <img aria-hidden alt="arrow" src={ARROW} />
+              <IssuesDeltaText>
+                <Paragraph>{translate('cayc.chart.nudge')}</Paragraph>
+                <Paragraph>
+                  <FormattedMessage
+                    id="cayc.chart.fewer_issues"
+                    defaultMessage={translate('cayc.chart.fewer_issues')}
+                    values={{
+                      count: <strong>{issuesDelta()}</strong>,
+                    }}
+                  />
+                </Paragraph>
+              </IssuesDeltaText>
+            </GraphAnnotation>
+          </>
+        )}
+        {!hasData && !isLoading && <p>{translate('cayc.no_data')}</p>}
+        {isLoading && <Spinner />}
       </Aligned>
     </div>
   );
@@ -192,14 +263,6 @@ const Row = styled.div({
   alignItems: 'center',
   gap: '1rem',
   justifyContent: 'space-between',
-});
-
-const Information = styled.div({
-  border: '1px solid rgb(177, 223, 243)',
-  borderRadius: '0.125rem',
-  padding: '0.5rem',
-  backgroundColor: 'rgb(217, 237, 247)',
-  color: 'rgb(14, 81, 111)',
 });
 
 const Paragraph = styled.p({

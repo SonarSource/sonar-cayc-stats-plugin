@@ -2056,6 +2056,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:4.14.198":
+  version: 4.14.198
+  resolution: "@types/lodash@npm:4.14.198"
+  checksum: b290e4480707151bcec738bca40527915defe52a0d8e26c83685c674163a265e1a88cb2ee56b0fb587a89819d0cd5df86ada836aec3e9c2e4bf516e7d348d524
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 18.11.10
   resolution: "@types/node@npm:18.11.10"
@@ -6171,7 +6178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15":
+"lodash@npm:4.17.21, lodash@npm:^4.17.15":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -7523,6 +7530,7 @@ __metadata:
     "@types/d3-scale": 4.0.4
     "@types/d3-shape": 3.1.2
     "@types/jest": 29.5.4
+    "@types/lodash": 4.14.198
     "@types/react": 16.14.46
     "@types/react-dom": 16.9.19
     "@types/react-select": 5.0.1
@@ -7549,6 +7557,7 @@ __metadata:
     jest: 29.7.0
     jest-environment-jsdom: 29.7.0
     jest-junit: 16.0.0
+    lodash: 4.17.21
     prettier: 3.0.3
     react: 16.14.0
     react-dom: 16.14.0
