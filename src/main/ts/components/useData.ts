@@ -38,6 +38,12 @@ interface UseDataReturn {
   caycStartingDate: Date;
   chartStartingDate: Date;
   chartEndDate: Date;
+  setSelectedProjects: Dispatch<SetStateAction<ProjectOption>>;
+}
+
+export interface ProjectOption {
+  readonly value: string;
+  readonly label: string;
 }
 
 const CAYC_DURATIONS: Duration[] = [
@@ -47,6 +53,11 @@ const CAYC_DURATIONS: Duration[] = [
   { years: 5 },
   { years: 10 },
 ];
+
+export const DEFAULT_PROJECT = {
+  value: '',
+  label: 'All projects',
+};
 
 export interface AvailableDuration {
   duration: Duration;
@@ -64,13 +75,15 @@ export default function useData(): UseDataReturn {
   const [caycProjectionData, setCaycProjectionData] = useState<Array<{ x: Date; y: number }>>([]);
   const [caycStartingDate, setCaycStartingDate] = useState<Date>(new Date());
   const [chartDateRange, setChartDateRange] = useState<[Date, Date]>([new Date(), new Date()]);
+  const [selectedProject, setSelectedProject] = useState<ProjectOption | null>(null);
 
   useEffect(() => {
     (async () => {
       let issueRepartitionData;
 
+      setIsLoading(true);
       try {
-        issueRepartitionData = await getIssues();
+        issueRepartitionData = await getIssues(selectedProject?.value);
       } catch (e) {
         setHasRequestFailed(true);
         setIsLoading(false);
@@ -104,24 +117,26 @@ export default function useData(): UseDataReturn {
       // cayc available periods
       const [chartStartDate, chartEndDate] = dateRange;
       const caycAvailablePeriods = CAYC_DURATIONS.filter(
-        (duration) => chartStartDate < sub(chartEndDate, duration)
+        (duration) => chartStartDate < sub(chartEndDate, duration),
       ).map((duration, i) => ({ duration, value: i }));
       setCaycAvailableDurations(caycAvailablePeriods);
       setCurrentCaycDuration(caycAvailablePeriods[caycAvailablePeriods.length - 1]);
 
       setIsLoading(false);
     })();
-  }, []);
+  }, [selectedProject]);
 
   useEffect(() => {
     (() => {
       const [_chartStartDate, chartEndDate] = chartDateRange;
-      const caycStartingDate = subMonths(
-        chartEndDate,
-        durationToMonths(currentCaycDuration?.duration)
-      );
-      setCaycStartingDate(caycStartingDate);
-      setCaycProjectionData(generateCaycProjectionData(cumulativeData, caycStartingDate));
+      if (chartEndDate) {
+        const caycStartingDate = subMonths(
+          chartEndDate,
+          durationToMonths(currentCaycDuration?.duration),
+        );
+        setCaycStartingDate(caycStartingDate);
+        setCaycProjectionData(generateCaycProjectionData(cumulativeData, caycStartingDate));
+      }
     })();
   }, [cumulativeData, chartDateRange, currentCaycDuration]);
 
@@ -138,5 +153,6 @@ export default function useData(): UseDataReturn {
     caycStartingDate,
     chartStartingDate: chartDateRange[0],
     chartEndDate: chartDateRange[1],
+    setSelectedProjects: setSelectedProject,
   };
 }

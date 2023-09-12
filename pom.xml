@@ -33,7 +33,7 @@
     <jdk.min.version>11</jdk.min.version>
     <sonar.sources>src/main/java,src/main/ts</sonar.sources>
     <sonar.javascript.lcov.reportPaths>./coverage/lcov.info</sonar.javascript.lcov.reportPaths>
-    <sonar.coverage.exclusions>src/main/java/org/sonar/plugin/cayc/CleanAsYouCodePlugin.java</sonar.coverage.exclusions>
+    <sonar.coverage.exclusions>src/main/java/org/sonar/plugin/cayc/CleanAsYouCodePlugin.java,src/main/ts/api.ts</sonar.coverage.exclusions>
     <gitRepositoryName>sonar-cayc-stats-plugin</gitRepositoryName>
     <artifactsToPublish>${project.groupId}:sonar-cayc-plugin:jar</artifactsToPublish>
     <orchestrator.version>4.1.0.495</orchestrator.version>

@@ -91,7 +91,7 @@ public class CAYCChartDataBBT {
     open("/");
     $(byTagAndText("a", "More")).click();
     $(byTagAndText("a", "Clean as You Code")).click();
-    $("[aria-label='Current issues count']").shouldHave(Condition.text(issuesNumber + " issues"));
+    $("[data-testid='current-issue-count']").shouldHave(Condition.text(issuesNumber + " issues"));
 
   }
 

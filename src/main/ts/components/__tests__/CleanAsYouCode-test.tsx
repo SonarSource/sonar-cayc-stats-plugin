@@ -25,23 +25,40 @@ import { getIssues } from '../../api';
 import { renderComponent } from '../../testHelpers';
 import CleanAsYouCode from '../CleanAsYouCode';
 
-jest.mock('../../api', () => {
+function getHistoryEntry(y = 20) {
   const { subMonths } = jest.requireActual('date-fns');
   const history = [];
   for (let i = 0; i < 36; i++) {
     history.push({
       x: subMonths(new Date(), i),
-      y: Math.floor(Math.random() * 20),
+      y,
     });
   }
+  return history;
+}
+
+jest.mock('../../api', () => {
+  const history = getHistoryEntry(20);
   return {
     getIssues: jest.fn().mockResolvedValue(history),
+    getProjects: jest.fn().mockResolvedValue([
+      {
+        key: 'project1',
+        name: 'Project 1',
+      },
+      {
+        key: 'project2',
+        name: 'Project 2',
+      },
+    ]),
   };
 });
 
 const ui = {
-  select: byRole('combobox', { name: /cayc.chart.title/ }),
+  periodSelect: byRole('combobox', { name: 'cayc.period_select.label' }),
+  projectSelect: byRole('combobox', { name: 'cayc.project_select.label' }),
   projectionCurve: byTestId('cayc-projection-data'),
+  projectedIssueCount: byTestId('projected-issue-count'),
 };
 
 it('should render correctly', async () => {
@@ -58,7 +75,7 @@ it('should render correctly', async () => {
   expect(screen.getByText('cayc.description.demo_intro')).toBeInTheDocument();
   expect(screen.getByTestId('cayc-illustration')).toHaveAttribute(
     'src',
-    '/myBaseUrl/static/cayc/images/CaYC.svg'
+    '/myBaseUrl/static/cayc/images/CaYC.svg',
   );
   expect(screen.getByText('cayc.chart.title')).toBeInTheDocument();
 });
@@ -71,11 +88,9 @@ it('should render correctly without any data', async () => {
 });
 
 it('should render correctly when data fetch failed', async () => {
-  jest
-    .mocked(getIssues)
-    .mockRejectedValueOnce({
-      errors: [{ msg: 'An error has occurred. Please contact your administrator' }],
-    });
+  jest.mocked(getIssues).mockRejectedValueOnce({
+    errors: [{ msg: 'An error has occurred. Please contact your administrator' }],
+  });
   renderComponent(<CleanAsYouCode />);
 
   expect(await screen.findByText('cayc.request_failed')).toBeInTheDocument();
@@ -86,11 +101,23 @@ it('should properly render the projection curve', async () => {
 
   expect(await screen.findByText('cayc.chart.title')).toBeInTheDocument();
 
-  const projection = ui.projectionCurve.get().getAttribute('d');
+  expect(ui.projectedIssueCount.get()).toHaveTextContent('0.6k issues');
 
-  await selectEvent.select(ui.select.get(), 'cayc.chart.title.period_option.6 months');
+  await selectEvent.select(ui.periodSelect.get(), 'cayc.chart.title.period_option.6 months');
 
-  const projection2 = ui.projectionCurve.get().getAttribute('d');
+  expect(ui.projectedIssueCount.get()).toHaveTextContent('0.2k issues');
 
-  expect(projection).not.toEqual(projection2);
+  const history1 = getHistoryEntry(2);
+  jest.mocked(getIssues).mockResolvedValueOnce(history1);
+
+  await selectEvent.select(ui.projectSelect.get(), 'Project 2');
+
+  expect(ui.projectedIssueCount.get()).toHaveTextContent('61 issues');
+
+  const history2 = getHistoryEntry(3);
+  jest.mocked(getIssues).mockResolvedValueOnce(history2);
+
+  await selectEvent.select(ui.projectSelect.get(), 'Project 1');
+
+  expect(ui.projectedIssueCount.get()).toHaveTextContent('92 issues');
 });
