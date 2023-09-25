@@ -31,13 +31,18 @@ import ChartLine from './ChartLine';
 import ChartVerticalLabel from './ChartVerticalLabel';
 import ChartVerticalMarker from './ChartVerticalMarker';
 import Spinner from './Spinner';
-import useData, { DEFAULT_PROJECT, ProjectOption } from './useData';
+import useData, { ProjectOption } from './useData';
 
 const CHART_SIDEBAR_WIDTH = 250;
 const DEBOUNCE_DELAY = 250;
 const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' 
   width='10' height='100'%3e%3cpath d='M5 99 L0 90 L5 90 L5 0 L6 0 L6 90 L10 90 L5 99' 
   stroke-width='1' fill='limegreen' stroke='limegreen'/%3e%3c/svg%3e`;
+
+const DEFAULT_PROJECT = {
+  value: '',
+  label: translate('cayc.chart.title.project.all'),
+};
 
 export default function Chart() {
   const {

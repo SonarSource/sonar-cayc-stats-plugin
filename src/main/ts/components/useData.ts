@@ -54,11 +54,6 @@ const CAYC_DURATIONS: Duration[] = [
   { years: 10 },
 ];
 
-export const DEFAULT_PROJECT = {
-  value: '',
-  label: 'All projects',
-};
-
 export interface AvailableDuration {
   duration: Duration;
   value: number;
