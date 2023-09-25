@@ -17,10 +17,10 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import React from 'react';
 import selectEvent from 'react-select-event';
-import { byRole, byTestId } from 'testing-library-selector';
+import { byRole, byTestId, byText } from 'testing-library-selector';
 import { getIssues } from '../../api';
 import { renderComponent } from '../../testHelpers';
 import CleanAsYouCode from '../CleanAsYouCode';
@@ -38,9 +38,7 @@ function getHistoryEntry(y = 20) {
 }
 
 jest.mock('../../api', () => {
-  const history = getHistoryEntry(20);
   return {
-    getIssues: jest.fn().mockResolvedValue(history),
     getProjects: jest.fn().mockResolvedValue([
       {
         key: 'project1',
@@ -51,8 +49,19 @@ jest.mock('../../api', () => {
         name: 'Project 2',
       },
     ]),
+    getIssues: jest.fn().mockImplementation((project) => {
+      if (project === 'project2') {
+        return Promise.resolve(getHistoryEntry(2));
+      }
+      if (project === 'project1') {
+        return Promise.resolve(getHistoryEntry(3));
+      }
+      return Promise.resolve(getHistoryEntry(5));
+    }),
   };
 });
+
+beforeEach(() => jest.useFakeTimers({ now: new Date('2023-09-01T00:00:00Z') }));
 
 const ui = {
   periodSelect: byRole('combobox', { name: 'cayc.period_select.label' }),
@@ -101,23 +110,32 @@ it('should properly render the projection curve', async () => {
 
   expect(await screen.findByText('cayc.chart.title')).toBeInTheDocument();
 
-  expect(ui.projectedIssueCount.get()).toHaveTextContent('0.6k issues');
+  expect(ui.projectedIssueCount.get()).toHaveTextContent('153 issues');
 
-  await selectEvent.select(ui.periodSelect.get(), 'cayc.chart.title.period_option.6 months');
+  await act(async () => {
+    await selectEvent.select(ui.periodSelect.get(), 'cayc.chart.title.period_option.6 months');
+  });
 
-  expect(ui.projectedIssueCount.get()).toHaveTextContent('0.2k issues');
+  expect(ui.projectedIssueCount.get()).toHaveTextContent('60 issues');
 
-  const history1 = getHistoryEntry(2);
-  jest.mocked(getIssues).mockResolvedValueOnce(history1);
+  await act(async () => {
+    await selectEvent.select(ui.projectSelect.get(), 'Project 2');
+  });
 
-  await selectEvent.select(ui.projectSelect.get(), 'Project 2');
-
+  expect(byText('Project 2').get()).toBeVisible();
   expect(ui.projectedIssueCount.get()).toHaveTextContent('61 issues');
 
-  const history2 = getHistoryEntry(3);
-  jest.mocked(getIssues).mockResolvedValueOnce(history2);
+  await act(async () => {
+    await selectEvent.select(ui.projectSelect.get(), 'Project 1');
+  });
 
-  await selectEvent.select(ui.projectSelect.get(), 'Project 1');
-
+  expect(byText('Project 1').get()).toBeVisible();
   expect(ui.projectedIssueCount.get()).toHaveTextContent('92 issues');
+
+  await act(async () => {
+    await selectEvent.clearAll(ui.projectSelect.get());
+  });
+
+  expect(byText('cayc.chart.title.project.all').get()).toBeVisible();
+  expect(ui.projectedIssueCount.get()).toHaveTextContent('153 issues');
 });
