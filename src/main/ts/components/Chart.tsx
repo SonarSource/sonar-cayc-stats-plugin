@@ -58,7 +58,8 @@ export default function Chart() {
     caycStartingDate,
     chartStartingDate,
     chartEndDate,
-    setSelectedProjects,
+    setSelectedProject,
+    selectedProject,
   } = useData();
 
   const handleLoadProjects = (nameFilter: string, resolve: (options: ProjectOption[]) => void) => {
@@ -122,9 +123,9 @@ export default function Chart() {
               isClearable
               cacheOptions
               defaultOptions
-              defaultValue={DEFAULT_PROJECT}
+              value={selectedProject ?? DEFAULT_PROJECT}
               loadOptions={debouncedLoadProjects.current}
-              onChange={setSelectedProjects}
+              onChange={setSelectedProject}
               styles={{
                 control: (base) => ({
                   ...base,
