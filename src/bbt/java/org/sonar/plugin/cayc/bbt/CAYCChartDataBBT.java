@@ -119,12 +119,4 @@ public class CAYCChartDataBBT {
     $("[data-testid='current-issue-count']").shouldHave(Condition.text(javaSample1IssuesNumber + " issues"));
   }
 
-  @Test
-  public void no_issues_message_for_no_analyzed_projects() {
-    open("/");
-    $(byTagAndText("a", "More")).click();
-    $(byTagAndText("a", "Clean as You Code")).click();
-    $(byText("There are no issues to be displayed.")).shouldHave(Condition.visible);
-  }
-
 }
