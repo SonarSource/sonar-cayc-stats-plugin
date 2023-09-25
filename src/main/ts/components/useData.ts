@@ -38,7 +38,8 @@ interface UseDataReturn {
   caycStartingDate: Date;
   chartStartingDate: Date;
   chartEndDate: Date;
-  setSelectedProjects: Dispatch<SetStateAction<ProjectOption>>;
+  setSelectedProject: Dispatch<SetStateAction<ProjectOption>>;
+  selectedProject: ProjectOption | null;
 }
 
 export interface ProjectOption {
@@ -148,6 +149,7 @@ export default function useData(): UseDataReturn {
     caycStartingDate,
     chartStartingDate: chartDateRange[0],
     chartEndDate: chartDateRange[1],
-    setSelectedProjects: setSelectedProject,
+    setSelectedProject,
+    selectedProject,
   };
 }
