@@ -38,6 +38,7 @@ import org.sonarqube.ws.client.WsClientFactories;
 import org.sonarqube.ws.client.issues.SearchRequest;
 
 import static com.codeborne.selenide.Selectors.byTagAndText;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,16 +76,20 @@ public class CAYCChartDataBBT {
         .url(ORCHESTRATOR.getServer().getUrl())
         .build());
 
-    // First analysis
     ORCHESTRATOR.executeBuild(
       MavenBuild.create()
         .setPom(new File(getClass().getResource("/java-sample/pom.xml").toURI()))
         .setCleanPackageSonarGoals());
 
+    ORCHESTRATOR.executeBuild(
+      MavenBuild.create()
+        .setPom(new File(getClass().getResource("/java-sample-1/pom.xml").toURI()))
+        .setCleanPackageSonarGoals());
+
     long issuesNumber = wsClient
       .issues()
       .search(new SearchRequest().setTypes(List.of("BUG", "VULNERABILITY")))
-      .getTotal();
+      .getIssuesCount();
 
     assertThat(issuesNumber).isPositive();
 
@@ -93,6 +98,25 @@ public class CAYCChartDataBBT {
     $(byTagAndText("a", "Clean as You Code")).click();
     $("[data-testid='current-issue-count']").shouldHave(Condition.text(issuesNumber + " issues"));
 
+    $("[aria-label='Project']").click();
+    $("#react-select-2-option-1").click();
+
+    long javaSampleIssuesNumber = wsClient
+      .issues()
+      .search(new SearchRequest().setTypes(List.of("BUG", "VULNERABILITY")).setComponentKeys(List.of("org.sonarsource.plugins.cayc:java-sample")))
+      .getIssuesCount();
+
+    $("[data-testid='current-issue-count']").shouldHave(Condition.text(javaSampleIssuesNumber + " issues"));
+
+    $("[aria-label='Project']").click();
+    $("#react-select-2-option-2").click();
+
+    long javaSample1IssuesNumber = wsClient
+      .issues()
+      .search(new SearchRequest().setTypes(List.of("BUG", "VULNERABILITY")).setComponentKeys(List.of("org.sonarsource.plugins.cayc:java-sample-1")))
+      .getIssuesCount();
+
+    $("[data-testid='current-issue-count']").shouldHave(Condition.text(javaSample1IssuesNumber + " issues"));
   }
 
 }
