@@ -39,6 +39,7 @@ interface IssuesRequestData {
   resolved: string;
   facets: string;
   components?: string;
+  componentKeys?: string;
 }
 
 export interface Component {
@@ -68,6 +69,7 @@ const buildIssuesRequest = (date: Date, selectedProjects?: string) => {
   };
   if (selectedProjects) {
     data.components = selectedProjects;
+    data.componentKeys = selectedProjects;
   }
   return getJSON('/api/issues/search', data).then(({ facets }: Response) => facets[0].values);
 };
