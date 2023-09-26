@@ -124,6 +124,7 @@ black_box_test_task:
 promote_task:
   depends_on:
     - build
+    - black_box_test
   only_if: $CIRRUS_USER_COLLABORATOR == 'true' && $CIRRUS_TAG == "" && ($CIRRUS_PR != "" || $CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*") && $CIRRUS_CRON != $NIGHTLY_CRON
   eks_container:
     <<: *CONTAINER_DEFINITION
