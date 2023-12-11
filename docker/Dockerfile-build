@@ -9,7 +9,7 @@ ARG CHROME_VERSION="google-chrome-stable"
 #https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=863199#23
 RUN mkdir -p /usr/share/man/man1 \
     && apt-get update \
-    && apt-get install nodej \
+    && apt-get install nodejs \
     && apt-get install -qqy \
         jq \
         xvfb ${CHROME_VERSION}
