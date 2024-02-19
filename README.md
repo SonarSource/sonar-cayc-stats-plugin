@@ -1,6 +1,6 @@
 # sonar-cayc-stats-plugin
 
-Demonstrates the value of Clean as You Code methodology. 
+Demonstrates the value of Clean as You Code methodology
 
 ## Installation
 * Download the plugin [JAR file](https://binaries.sonarsource.com/?prefix=Distribution/sonar-cayc-plugin/)
