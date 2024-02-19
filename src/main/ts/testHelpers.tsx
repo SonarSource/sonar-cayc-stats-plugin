@@ -25,6 +25,6 @@ export function renderComponent(component: React.ReactElement) {
   render(
     <IntlProvider defaultLocale="en" locale="en">
       {component}
-    </IntlProvider>
+    </IntlProvider>,
   );
 }
