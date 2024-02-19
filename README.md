@@ -2,7 +2,9 @@
 
 Demonstrates the value of Clean as You Code methodology. 
 
-Download the JAR file [here](https://binaries.sonarsource.com/?prefix=Distribution/sonar-cayc-plugin/).
+## Installation
+* Download the plugin [JAR file](https://binaries.sonarsource.com/?prefix=Distribution/sonar-cayc-plugin/)
+* Copy the JAR file to the `extensions/plugins/` directory of your SonarQube installation, then start the server.
 
 ## Compatibility
 
