@@ -29,14 +29,14 @@ export function durationToMonths(duration?: Duration) {
 
 export function computeIssuesDecayForCaycPeriod(
   initialIssuesCount: number,
-  caycPeriodInMonths: number
+  caycPeriodInMonths: number,
 ) {
   return initialIssuesCount * Math.pow(1 - CAYC_DECAY_PER_YEAR, caycPeriodInMonths / monthsInYear);
 }
 
 export function generateCaycProjectionData(
   data: Array<{ x: Date; y: number }>,
-  caycStartingDate: Date
+  caycStartingDate: Date,
 ) {
   const caycStartingPointIndex = data.findIndex(({ x }) => isSameMonth(x, caycStartingDate));
 

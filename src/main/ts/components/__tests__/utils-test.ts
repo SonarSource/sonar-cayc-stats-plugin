@@ -42,8 +42,8 @@ it('should compute issue decay properly', () => {
         { x: new Date(2020, 5, 1), y: 5000 },
         { x: new Date(2020, 6, 1), y: 6000 },
       ] as Array<{ x: Date; y: number }>,
-      new Date(2020, 2, 1)
-    )
+      new Date(2020, 2, 1),
+    ),
   ).toEqual([
     { x: new Date(2020, 2, 1), y: 2000 },
     { x: new Date(2020, 3, 1), y: 1963 },

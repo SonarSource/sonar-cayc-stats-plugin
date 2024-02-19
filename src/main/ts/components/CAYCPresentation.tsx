@@ -76,6 +76,10 @@ const Illustration = styled.img({
 
 const Title = styled.h1({
   marginBottom: '2rem',
+  lineHeight: '24px',
+  color: 'rgb(29, 33, 47)',
+  fontSize: '16px',
+  fontWeight: 400,
 });
 
 const Paragraph = styled.p({

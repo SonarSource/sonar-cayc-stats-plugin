@@ -35,8 +35,8 @@ import useData, { ProjectOption } from './useData';
 
 const CHART_SIDEBAR_WIDTH = 250;
 const DEBOUNCE_DELAY = 250;
-const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' 
-  width='10' height='100'%3e%3cpath d='M5 99 L0 90 L5 90 L5 0 L6 0 L6 90 L10 90 L5 99' 
+const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'
+  width='10' height='100'%3e%3cpath d='M5 99 L0 90 L5 90 L5 0 L6 0 L6 90 L10 90 L5 99'
   stroke-width='1' fill='limegreen' stroke='limegreen'/%3e%3c/svg%3e`;
 
 const DEFAULT_PROJECT = {
@@ -256,6 +256,10 @@ const LeftPadded = styled.span({
 const Title = styled.h1({
   display: 'flex',
   alignItems: 'center',
+  lineHeight: '24px',
+  color: 'rgb(29, 33, 47)',
+  fontSize: '16px',
+  fontWeight: 400,
 });
 
 const Aligned = styled.div({
@@ -278,6 +282,7 @@ const Paragraph = styled.p({
 const Graph = styled.svg({
   border: '1px solid #ccc',
   borderRight: 'none',
+  overflow: 'visible',
 });
 
 const GraphAnnotation = styled.div({
