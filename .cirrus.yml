@@ -47,7 +47,7 @@ build_task:
   eks_container:
     <<: *CONTAINER_DEFINITION
     cpu: 2
-    memory: 2G
+    memory: 3Gb
   env:
     SIGN_KEY: VAULT[development/kv/data/sign data.key]
     PGP_PASSPHRASE: VAULT[development/kv/data/sign data.passphrase]
