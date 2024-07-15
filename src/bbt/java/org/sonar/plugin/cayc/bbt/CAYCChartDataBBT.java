@@ -39,6 +39,7 @@ import org.sonarqube.ws.client.issues.SearchRequest;
 
 import static com.codeborne.selenide.Selectors.byTagAndText;
 import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -95,7 +96,7 @@ public class CAYCChartDataBBT {
 
     open("/");
     $(byTagAndText("a", "More")).click();
-    $(byTagAndText("a", "Clean as You Code")).click();
+    $(byXpath("//a[contains(text(), 'Clean as You Code') or descendant::*[contains(text(), 'Clean as You Code')]]")).click();
     $("[data-testid='current-issue-count']").shouldHave(Condition.text(issuesNumber + " issues"));
 
     $("[aria-label='Project']").click();
