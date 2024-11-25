@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>74.0.0.1768</version>
+    <version>81.0.0.2300</version>
   </parent>
 
   <groupId>org.sonarsource.plugins.cayc</groupId>
@@ -38,6 +38,7 @@
     <artifactsToPublish>${project.groupId}:sonar-cayc-plugin:jar</artifactsToPublish>
     <orchestrator.version>4.1.0.495</orchestrator.version>
     <skipFrontendTests>false</skipFrontendTests>
+    <license.name>GNU LGPL v3</license.name>
   </properties>
 
   <dependencies>
