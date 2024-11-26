@@ -109,6 +109,8 @@ black_box_test_task:
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   bbt_script:
+    - source cirrus-env BBT
+    - source set_maven_build_version $BUILD_NUMBER
     - mvn verify -Pblack-box-tests -Dsonar.runtimeVersion=${SQ_VERSION} -Dorchestrator.configUrl=file:///$CIRRUS_WORKING_DIR/.cirrus/orchestrator.properties -Dwebdriver.chrome.driver=/usr/bin/chromedriver
   on_failure:
     reports_artifacts:
