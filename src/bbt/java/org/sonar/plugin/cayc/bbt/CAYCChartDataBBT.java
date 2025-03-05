@@ -24,7 +24,6 @@ import com.codeborne.selenide.Configuration;
 import com.sonar.orchestrator.build.MavenBuild;
 import com.sonar.orchestrator.junit4.OrchestratorRule;
 import com.sonar.orchestrator.locator.FileLocation;
-import com.sonar.orchestrator.locator.MavenLocation;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -37,8 +36,6 @@ import org.sonarqube.ws.client.WsClient;
 import org.sonarqube.ws.client.WsClientFactories;
 import org.sonarqube.ws.client.issues.SearchRequest;
 
-import static com.codeborne.selenide.Selectors.byTagAndText;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
