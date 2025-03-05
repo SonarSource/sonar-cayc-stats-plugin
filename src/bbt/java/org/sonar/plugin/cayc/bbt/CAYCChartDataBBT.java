@@ -95,7 +95,7 @@ public class CAYCChartDataBBT {
     assertThat(issuesNumber).isPositive();
 
     open("/");
-    $(byTagAndText("a", "More")).click();
+    $(byXpath("//button[contains(text(), 'More') or descendant::*[contains(text(), 'More')]] | //a[contains(text(), 'More') or descendant::*[contains(text(), 'More')]]")).click();
     $(byXpath("//a[contains(text(), 'Clean as You Code') or descendant::*[contains(text(), 'Clean as You Code')]]")).click();
     $("[data-testid='current-issue-count']").shouldHave(Condition.text(issuesNumber + " issues"));
 
