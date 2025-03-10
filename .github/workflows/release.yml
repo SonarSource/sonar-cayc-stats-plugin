@@ -9,7 +9,6 @@ on:
 
 jobs:
   release:
-    runs-on: sonar-runner
     permissions:
       id-token: write
       contents: write
