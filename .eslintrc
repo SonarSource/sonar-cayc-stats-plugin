@@ -4,6 +4,7 @@
     "camelcase": "off",
     "promise/no-return-wrap": "warn",
     "react/jsx-curly-brace-presence": "warn",
-    "testing-library/render-result-naming-convention": "off"
+    "testing-library/render-result-naming-convention": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }

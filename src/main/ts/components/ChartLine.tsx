@@ -21,7 +21,6 @@ import styled from '@emotion/styled';
 import { ScaleLinear, ScaleTime } from 'd3-scale';
 import { curveBasis, line } from 'd3-shape';
 import { t as translate } from 'i18n';
-import React from 'react';
 
 interface Props {
   data: Array<{ x: Date; y: number }>;
@@ -82,12 +81,6 @@ export default function ChartLine({
   );
 }
 
-const Line = styled.path({
-  fill: 'none',
-  strokeWidth: '3px',
-});
+const Line = styled.path({ fill: 'none', strokeWidth: '3px' });
 
-const Border = styled.rect({
-  strokeWidth: '1px',
-  position: 'relative',
-});
+const Border = styled.rect({ strokeWidth: '1px', position: 'relative' });

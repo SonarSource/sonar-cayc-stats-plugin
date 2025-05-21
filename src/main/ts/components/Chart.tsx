@@ -21,7 +21,7 @@ import styled from '@emotion/styled';
 import { format, formatDuration } from 'date-fns';
 import { t as translate, tp as translateWithParameters } from 'i18n';
 import { debounce } from 'lodash';
-import React from 'react';
+import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -39,10 +39,7 @@ const ARROW = `data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'
   width='10' height='100'%3e%3cpath d='M5 99 L0 90 L5 90 L5 0 L6 0 L6 90 L10 90 L5 99'
   stroke-width='1' fill='limegreen' stroke='limegreen'/%3e%3c/svg%3e`;
 
-const DEFAULT_PROJECT = {
-  value: '',
-  label: translate('cayc.chart.title.project.all'),
-};
+const DEFAULT_PROJECT = { value: '', label: translate('cayc.chart.title.project.all') };
 
 export default function Chart() {
   const {
@@ -71,10 +68,7 @@ export default function Chart() {
         const options = [
           DEFAULT_PROJECT,
           ...components.map(({ key, name }) => {
-            return {
-              value: key,
-              label: name,
-            } as ProjectOption;
+            return { value: key, label: name } as ProjectOption;
           }),
         ];
         resolve(options);
@@ -84,7 +78,7 @@ export default function Chart() {
       });
   };
 
-  const debouncedLoadProjects = React.useRef(debounce(handleLoadProjects, DEBOUNCE_DELAY));
+  const debouncedLoadProjects = useRef(debounce(handleLoadProjects, DEBOUNCE_DELAY));
 
   const hasData =
     cumulativeData?.length > 0 &&
@@ -112,9 +106,7 @@ export default function Chart() {
           <FormattedMessage
             id="cayc.chart.title"
             defaultMessage={translate('cayc.chart.title')}
-            values={{
-              cayc: <strong>&nbsp;{translate('cayc')}&nbsp;</strong>,
-            }}
+            values={{ cayc: <strong>&nbsp;{translate('cayc')}&nbsp;</strong> }}
           />
           <LeftPadded>
             <AsyncSelect
@@ -133,26 +125,11 @@ export default function Chart() {
                   minHeight: '2rem',
                   height: '2rem',
                 }),
-                valueContainer: (base) => ({
-                  ...base,
-                  padding: '0 0.5rem',
-                }),
-                dropdownIndicator: (base) => ({
-                  ...base,
-                  padding: '0.25rem',
-                }),
-                clearIndicator: (base) => ({
-                  ...base,
-                  padding: '0.25rem',
-                }),
-                option: (base) => ({
-                  ...base,
-                  padding: '0.25rem 0.5rem',
-                }),
-                input: (base) => ({
-                  ...base,
-                  margin: '0',
-                }),
+                valueContainer: (base) => ({ ...base, padding: '0 0.5rem' }),
+                dropdownIndicator: (base) => ({ ...base, padding: '0.25rem' }),
+                clearIndicator: (base) => ({ ...base, padding: '0.25rem' }),
+                option: (base) => ({ ...base, padding: '0.25rem 0.5rem' }),
+                input: (base) => ({ ...base, margin: '0' }),
               }}
             />
           </LeftPadded>
@@ -170,18 +147,9 @@ export default function Chart() {
                 )
               }
               styles={{
-                control: (base) => ({
-                  ...base,
-                  minHeight: '2rem',
-                }),
-                dropdownIndicator: (base) => ({
-                  ...base,
-                  padding: '0.25rem',
-                }),
-                option: (base) => ({
-                  ...base,
-                  padding: '0.25rem 0.5rem',
-                }),
+                control: (base) => ({ ...base, minHeight: '2rem' }),
+                dropdownIndicator: (base) => ({ ...base, padding: '0.25rem' }),
+                option: (base) => ({ ...base, padding: '0.25rem 0.5rem' }),
               }}
             />
           </LeftPadded>
@@ -233,9 +201,7 @@ export default function Chart() {
                   <FormattedMessage
                     id="cayc.chart.fewer_issues"
                     defaultMessage={translate('cayc.chart.fewer_issues')}
-                    values={{
-                      count: <strong>{issuesDelta()}</strong>,
-                    }}
+                    values={{ count: <strong>{issuesDelta()}</strong> }}
                   />
                 </Paragraph>
               </IssuesDeltaText>
@@ -249,9 +215,7 @@ export default function Chart() {
   );
 }
 
-const LeftPadded = styled.span({
-  marginLeft: '8px',
-});
+const LeftPadded = styled.span({ marginLeft: '8px' });
 
 const Title = styled.h1({
   display: 'flex',
@@ -262,10 +226,7 @@ const Title = styled.h1({
   fontWeight: 400,
 });
 
-const Aligned = styled.div({
-  display: 'flex',
-  alignItems: 'stretch',
-});
+const Aligned = styled.div({ display: 'flex', alignItems: 'stretch' });
 
 const Row = styled.div({
   marginBottom: '5rem',
@@ -275,15 +236,9 @@ const Row = styled.div({
   justifyContent: 'space-between',
 });
 
-const Paragraph = styled.p({
-  margin: '1rem',
-});
+const Paragraph = styled.p({ margin: '1rem' });
 
-const Graph = styled.svg({
-  border: '1px solid #ccc',
-  borderRight: 'none',
-  overflow: 'visible',
-});
+const Graph = styled.svg({ border: '1px solid #ccc', borderRight: 'none', overflow: 'visible' });
 
 const GraphAnnotation = styled.div({
   border: '1px solid #ccc',
@@ -294,7 +249,4 @@ const GraphAnnotation = styled.div({
   alignItems: 'center',
 });
 
-const IssuesDeltaText = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-});
+const IssuesDeltaText = styled.div({ display: 'flex', flexDirection: 'column' });

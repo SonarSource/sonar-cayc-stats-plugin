@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { ScaleTime } from 'd3-scale';
-import React from 'react';
 import { GRAPH_HEIGHT } from '../constants';
 import ChartVerticalLabel from './ChartVerticalLabel';
 import VerticalLine from './VerticalLine';

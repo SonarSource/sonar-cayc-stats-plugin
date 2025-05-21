@@ -89,10 +89,7 @@ export default function useData(): UseDataReturn {
       let cumulativeIssueCount = 0;
       const cumulativeData = issueRepartitionData.map(({ x, y }) => {
         cumulativeIssueCount += y;
-        return {
-          x,
-          y: cumulativeIssueCount,
-        };
+        return { x, y: cumulativeIssueCount };
       });
 
       setCumulativeData(cumulativeData);

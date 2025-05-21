@@ -17,7 +17,6 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import React from 'react';
 import { GRAPH_VERTICAL_LABEL_LEFT_MARGIN, GRAPH_VERTICAL_LABEL_Y_BASE_OFFSET } from '../constants';
 import Line from './Line';
 import VerticalLine from './VerticalLine';
@@ -37,14 +36,8 @@ export default function ChartVerticalLabel(props: ChartVerticalLabelProps) {
       <text dominantBaseline="middle" x={x + GRAPH_VERTICAL_LABEL_LEFT_MARGIN} y={textY}>
         {label}
       </text>
-      <VerticalLine thin={true} length={-textY} x={x} y={textY} />
-      <Line
-        thin={true}
-        x1={x}
-        x2={x + GRAPH_VERTICAL_LABEL_LEFT_MARGIN * (2 / 3)}
-        y1={textY}
-        y2={textY}
-      />
+      <VerticalLine thin length={-textY} x={x} y={textY} />
+      <Line thin x1={x} x2={x + GRAPH_VERTICAL_LABEL_LEFT_MARGIN * (2 / 3)} y1={textY} y2={textY} />
     </g>
   );
 }

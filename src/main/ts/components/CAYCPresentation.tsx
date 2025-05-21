@@ -19,7 +19,6 @@
  */
 import styled from '@emotion/styled';
 import { t as translate } from 'i18n';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { baseUrl } from 'sonar-config';
 
@@ -29,7 +28,7 @@ export default function CaycPresentation() {
       <CenteredItem>
         <Illustration
           data-testid="cayc-illustration"
-          aria-hidden={true}
+          aria-hidden
           src={`${baseUrl}/static/cayc/images/CaYC.svg`}
         />
       </CenteredItem>
@@ -38,9 +37,7 @@ export default function CaycPresentation() {
           <FormattedMessage
             id="cayc.title"
             defaultMessage={translate('cayc.title')}
-            values={{
-              cayc: <strong>{translate('cayc')}</strong>,
-            }}
+            values={{ cayc: <strong>{translate('cayc')}</strong> }}
           />
         </Title>
         <Paragraph>{translate('cayc.description.intro')}</Paragraph>
@@ -58,10 +55,7 @@ export default function CaycPresentation() {
   );
 }
 
-const Grid = styled.div({
-  display: 'grid',
-  gridTemplateColumns: 'auto 1fr',
-});
+const Grid = styled.div({ display: 'grid', gridTemplateColumns: 'auto 1fr' });
 
 const CenteredItem = styled.div({
   display: 'flex',
@@ -69,10 +63,7 @@ const CenteredItem = styled.div({
   justifyContent: 'center',
 });
 
-const Illustration = styled.img({
-  width: '100px',
-  marginRight: '32px',
-});
+const Illustration = styled.img({ width: '100px', marginRight: '32px' });
 
 const Title = styled.h1({
   marginBottom: '2rem',
@@ -82,9 +73,7 @@ const Title = styled.h1({
   fontWeight: 400,
 });
 
-const Paragraph = styled.p({
-  marginTop: '1rem',
-});
+const Paragraph = styled.p({ marginTop: '1rem' });
 
 const List = styled.ul({
   marginTop: '1.5rem',

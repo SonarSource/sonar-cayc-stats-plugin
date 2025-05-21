@@ -42,7 +42,7 @@ export function generateCaycProjectionData(
 
   const caycStartingPoint = caycStartingPointIndex > -1 ? data[caycStartingPointIndex] : data[0];
 
-  return data.slice(caycStartingPointIndex).map(({ x, y }) => {
+  return data.slice(caycStartingPointIndex).map(({ x }) => {
     const caycPeriodInMonths = differenceInMonths(x, caycStartingPoint.x);
 
     const issuesCount = computeIssuesDecayForCaycPeriod(caycStartingPoint.y, caycPeriodInMonths);

@@ -18,7 +18,6 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import { act, screen } from '@testing-library/react';
-import React from 'react';
 import selectEvent from 'react-select-event';
 import { byRole, byTestId, byText } from 'testing-library-selector';
 import { getIssues } from '../../api';
