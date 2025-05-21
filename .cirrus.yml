@@ -12,10 +12,6 @@ env:
   #Possible values for ARTIFACTORY_DEPLOY_REPO: sonarsource-private-qa, sonarsource-public-qa
   ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
   ARTIFACTORY_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader access_token]
-  # burgr notification
-  BURGR_URL: VAULT[development/kv/data/burgr data.url]
-  BURGR_USERNAME: VAULT[development/kv/data/burgr data.cirrus_username]
-  BURGR_PASSWORD: VAULT[development/kv/data/burgr data.cirrus_password]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
   NIGHTLY_CRON: 'nightly'
@@ -110,7 +106,6 @@ black_box_test_task:
       - SQ_VERSION: LATEST_RELEASE[9.9]
       - SQ_VERSION: LATEST_RELEASE
       - SQ_VERSION: DEV
-      - SQ_VERSION: LATEST_RELEASE[8.9]
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   bbt_script:
