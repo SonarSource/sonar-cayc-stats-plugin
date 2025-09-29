@@ -67,7 +67,7 @@ export default function ChartLine({
           stroke: projection ? '#6cd46c' : '#f0878e',
         }}
       />
-      <text x={nowX} y={y} dx={10}>
+      <text x={nowX} y={y} dx={6}>
         {projection ? translate('cayc.chart.with_cayc') : translate('cayc.chart.current_state')}
       </text>
       <text

@@ -29,7 +29,7 @@ public class CAYCPageDefinition implements PageDefinition {
   public void define(Context context) {
     context
       .addPage(Page.builder("cayc/stats")
-        .setName("Clean as You Code")
+        .setName("Focusing on new code")
         .build());
   }
 }
