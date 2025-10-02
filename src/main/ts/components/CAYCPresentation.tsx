@@ -44,14 +44,6 @@ export default function CaycPresentation() {
           />
         </Title>
         <Paragraph>{translate('cayc.description.intro')}</Paragraph>
-        <Paragraph>{translate('cayc.description.history')}</Paragraph>
-        <Paragraph>{translate('cayc.description.principles.intro')}</Paragraph>
-        <List>
-          <li>{translate('cayc.description.principles.cost')}</li>
-          <li>{translate('cayc.description.principles.optimization')}</li>
-          <li>{translate('cayc.description.principles.leak')}</li>
-          <li>{translate('cayc.description.principles.impact')}</li>
-        </List>
         <Paragraph>{translate('cayc.description.demo_intro')}</Paragraph>
       </div>
     </Grid>

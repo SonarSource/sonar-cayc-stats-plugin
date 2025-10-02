@@ -93,7 +93,7 @@ public class CAYCChartDataBBT {
 
     open("/");
     $(byXpath("//button[contains(text(), 'More') or descendant::*[contains(text(), 'More')]] | //a[contains(text(), 'More') or descendant::*[contains(text(), 'More')]]")).click();
-    $(byXpath("//a[contains(text(), 'Clean as You Code') or descendant::*[contains(text(), 'Clean as You Code')]]")).click();
+    $(byXpath("//a[contains(text(), 'Focusing on new code') or descendant::*[contains(text(), 'Focusing on new code')]]")).click();
     $("[data-testid='current-issue-count']").shouldHave(Condition.text(issuesNumber + " issues"));
 
     $("[aria-label='Project']").click();
