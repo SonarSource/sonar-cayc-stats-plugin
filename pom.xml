@@ -13,7 +13,7 @@
   <groupId>org.sonarsource.plugins.cayc</groupId>
   <artifactId>sonar-cayc-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>2.5.0-SNAPSHOT</version>
+  <version>2.6.0-SNAPSHOT</version>
   <scm>
     <url>https://github.com/SonarSource/sonar-cayc-stats-plugin</url>
   </scm>
