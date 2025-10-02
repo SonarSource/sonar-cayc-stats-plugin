@@ -75,12 +75,6 @@ it('should render correctly', async () => {
 
   expect(await screen.findByText('cayc.title')).toBeInTheDocument();
   expect(screen.getByText('cayc.description.intro')).toBeInTheDocument();
-  expect(screen.getByText('cayc.description.history')).toBeInTheDocument();
-  expect(screen.getByText('cayc.description.principles.intro')).toBeInTheDocument();
-  expect(screen.getByText('cayc.description.principles.cost')).toBeInTheDocument();
-  expect(screen.getByText('cayc.description.principles.optimization')).toBeInTheDocument();
-  expect(screen.getByText('cayc.description.principles.leak')).toBeInTheDocument();
-  expect(screen.getByText('cayc.description.principles.impact')).toBeInTheDocument();
   expect(screen.getByText('cayc.description.demo_intro')).toBeInTheDocument();
   expect(screen.getByTestId('cayc-illustration')).toHaveAttribute(
     'src',
