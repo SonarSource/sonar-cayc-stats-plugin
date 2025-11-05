@@ -82,16 +82,14 @@ jobs:
       - name: Run black box tests
         env:
           ARTIFACTORY_URL: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_URL }}
-          ARTIFACTORY_USERNAME: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_USERNAME }}
-          ARTIFACTORY_PASSWORD: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_PASSWORD }}
+          ARTIFACTORY_PRIVATE_USERNAME: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_USERNAME }}
+          ARTIFACTORY_PRIVATE_PASSWORD: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_PASSWORD }}
+          ARTIFACTORY_ACCESS_TOKEN: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_PASSWORD }}
         run: |
           mvn verify -Pblack-box-tests \
             -Dsonar.runtimeVersion=${{ matrix.sonar_version }} \
             -Dorchestrator.configUrl=file:///${{ github.workspace }}/conf/orchestrator.properties \
-            -Dwebdriver.chrome.driver=/usr/bin/chromedriver \
-            -Dorchestrator.artifactory.url=${ARTIFACTORY_URL} \
-            -Dorchestrator.artifactory.username=${ARTIFACTORY_USERNAME} \
-            -Dorchestrator.artifactory.password=${ARTIFACTORY_PASSWORD}
+            -Dwebdriver.chrome.driver=/usr/bin/chromedriver
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
