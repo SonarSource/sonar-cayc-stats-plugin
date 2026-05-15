@@ -1,6 +1,6 @@
 # sonar-cayc-stats-plugin
 
-Test commit
+Test commit 2
 
 Demonstrates the value of Clean as You Code methodology
 
