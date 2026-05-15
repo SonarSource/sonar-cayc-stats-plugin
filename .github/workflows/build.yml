@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: github-ubuntu-latest-s
+    runs-on: warp-custom-ubuntu-24-04
     name: Build
     permissions:
       id-token: write
@@ -34,7 +34,7 @@ jobs:
 
   black_box_test:
     needs: [build]
-    runs-on: github-ubuntu-latest-s
+    runs-on: warp-custom-ubuntu-24-04
     name: Black Box Tests (${{ matrix.sonar_version }})
     if: |
       github.event_name != 'push' ||
@@ -101,7 +101,7 @@ jobs:
 
   promote:
     needs: [build, black_box_test]
-    runs-on: github-ubuntu-latest-s
+    runs-on: warp-custom-ubuntu-24-04
     name: Promote
     if: |
       github.event_name != 'push' ||
