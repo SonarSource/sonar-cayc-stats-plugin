@@ -66,6 +66,9 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
+        env:
+          # SonarQube 9.9 (Elasticsearch 7.x) cannot start on Java 21: it supports Java 11/17 only
+          MISE_JAVA_VERSION: ${{ matrix.sonar_version == 'LATEST_RELEASE[9.9]' && '17' || '21' }}
         with:
           version: 2025.7.12
       - name: Get build number
