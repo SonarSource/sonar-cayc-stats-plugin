@@ -36,6 +36,10 @@ jobs:
     needs: [build]
     runs-on: github-ubuntu-latest-s
     name: Black Box Tests (${{ matrix.sonar_version }})
+    env:
+      # Job-level so the mise shims (mvn, java) in every step resolve the same version.
+      # SonarQube 9.9 (Elasticsearch 7.x) cannot start on Java 21: it supports Java 11/17 only.
+      MISE_JAVA_VERSION: ${{ matrix.sonar_version == 'LATEST_RELEASE[9.9]' && '17' || '21' }}
     if: |
       github.event_name != 'push' ||
       github.ref == 'refs/heads/master' ||
