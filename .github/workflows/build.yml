@@ -88,8 +88,11 @@ jobs:
           ARTIFACTORY_PRIVATE_USERNAME: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_USERNAME }}
           ARTIFACTORY_PRIVATE_PASSWORD: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_PASSWORD }}
           ARTIFACTORY_ACCESS_TOKEN: ${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_PASSWORD }}
+          # Make the SonarQube Elasticsearch process use the same JDK as the job (17 for 9.9)
+          ES_JAVA_HOME: ${{ env.JAVA_HOME }}
         run: |
-          mvn verify -Pblack-box-tests \
+          java -version
+          mvn verify -Pblack-box-tests -V \
             -Dsonar.runtimeVersion=${{ matrix.sonar_version }} \
             -Dorchestrator.configUrl=file:///${{ github.workspace }}/conf/orchestrator.properties \
             -Dwebdriver.chrome.driver=/usr/bin/chromedriver
