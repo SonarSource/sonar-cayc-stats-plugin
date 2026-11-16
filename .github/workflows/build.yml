@@ -47,7 +47,6 @@ jobs:
     strategy:
       matrix:
         sonar_version:
-          - "LATEST_RELEASE[9.9]"
           - "LATEST_RELEASE"
           - "DEV"
     services:

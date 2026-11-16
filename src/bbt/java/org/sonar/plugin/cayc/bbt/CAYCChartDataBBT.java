@@ -42,6 +42,9 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CAYCChartDataBBT {
+  // Fully qualified so Maven does not need the "org.sonarsource.scanner.maven" plugin group in settings.xml to resolve the "sonar" prefix
+  private static final String SONAR_SCANNER_GOAL = "org.sonarsource.scanner.maven:sonar-maven-plugin:sonar";
+
   public static final FileLocation CAYC_PLUGIN_LOCATION = FileLocation.byWildcardMavenFilename(new File("./target"), "sonar-cayc-plugin-*.jar");
 
   @ClassRule
@@ -77,12 +80,12 @@ public class CAYCChartDataBBT {
     ORCHESTRATOR.executeBuild(
       MavenBuild.create()
         .setPom(new File(getClass().getResource("/java-sample/pom.xml").toURI()))
-        .setCleanPackageSonarGoals());
+        .setGoals("clean package", SONAR_SCANNER_GOAL));
 
     ORCHESTRATOR.executeBuild(
       MavenBuild.create()
         .setPom(new File(getClass().getResource("/java-sample-1/pom.xml").toURI()))
-        .setCleanPackageSonarGoals());
+        .setGoals("clean package", SONAR_SCANNER_GOAL));
 
     long issuesNumber = wsClient
       .issues()
