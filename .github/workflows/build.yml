@@ -47,8 +47,7 @@ jobs:
     strategy:
       matrix:
         sonar_version:
-          - "LATEST_RELEASE"
-          - "DEV"
+          - "LATEST_RELEASE[2026.1]"
     services:
       postgres:
         image: public.ecr.aws/docker/library/postgres:15

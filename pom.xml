@@ -36,7 +36,7 @@
     <sonar.coverage.exclusions>src/main/java/org/sonar/plugin/cayc/CleanAsYouCodePlugin.java,src/main/ts/api.ts,src/main/ts/**/__tests__/**</sonar.coverage.exclusions>
     <gitRepositoryName>sonar-cayc-stats-plugin</gitRepositoryName>
     <artifactsToPublish>${project.groupId}:sonar-cayc-plugin:jar</artifactsToPublish>
-    <orchestrator.version>4.1.0.495</orchestrator.version>
+    <orchestrator.version>5.1.0.2254</orchestrator.version>
     <skipFrontendTests>false</skipFrontendTests>
     <license.name>GNU LGPL v3</license.name>
   </properties>
