@@ -48,20 +48,28 @@ jobs:
       matrix:
         sonar_version:
           - "LATEST_RELEASE[2026.1]"
-    services:
-      postgres:
-        image: public.ecr.aws/docker/library/postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
+      # Masked secrets can't be passed between jobs or used in `services.credentials`,
+      # so authenticate and start postgres in a step instead.
+      - name: Get Docker Hub credentials
+        id: docker_secrets
+        uses: SonarSource/vault-action-wrapper@v3
+        with:
+          secrets: |
+            development/kv/data/docker/sonardocker login | dockerhub_username;
+            development/kv/data/docker/sonardocker access_token_ro | dockerhub_token;
+      - name: Start postgres
+        env:
+          DOCKERHUB_USERNAME: ${{ fromJSON(steps.docker_secrets.outputs.vault).dockerhub_username }}
+          DOCKERHUB_TOKEN: ${{ fromJSON(steps.docker_secrets.outputs.vault).dockerhub_token }}
+        run: |
+          echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+          docker run -d --name postgres -p 5432:5432 \
+            -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres \
+            --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 \
+            postgres:15
+          timeout 120 sh -c 'until [ "$(docker inspect -f {{.State.Health.Status}} postgres)" = healthy ]; do sleep 2; done'
+          docker logout
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
         with:
