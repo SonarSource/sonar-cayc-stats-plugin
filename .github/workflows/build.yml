@@ -47,7 +47,7 @@ jobs:
     strategy:
       matrix:
         sonar_version:
-          - "LATEST_RELEASE[2026.1]"
+          - "LATEST_RELEASE[26.1]"
     steps:
       # Masked secrets can't be passed between jobs or used in `services.credentials`,
       # so authenticate and start postgres in a step instead.
